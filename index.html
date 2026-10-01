@@ -1,0 +1,2250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>documentgenerator.ai — Create legal documents in minutes</title>
+<meta name="description" content="Generate professional legal documents for free — Power of Attorney, Rental Agreements, and more. Available in English, Spanish, French, German, and Dutch.">
+<meta name="keywords" content="document generator, power of attorney, rental agreement, legal documents, free, PDF, volmacht, huurcontract, poder notarial, procuration, Vollmacht">
+<meta name="author" content="documentgenerator.ai">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://documentgenerator.ai">
+<meta property="og:title" content="documentgenerator.ai — Create legal documents in minutes">
+<meta property="og:description" content="Generate professional legal documents for free. Power of Attorney, Rental Agreements, and more in 5 languages.">
+<meta property="og:url" content="https://documentgenerator.ai">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="nl_NL">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="de_DE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="documentgenerator.ai — Create legal documents in minutes">
+<meta name="twitter:description" content="Generate professional legal documents for free in 5 languages.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pri: #1A56DB;
+  --pri-light: #E1EFFE;
+  --pri-dark: #1444B0;
+  --green: #059669;
+  --green-light: #D1FAE5;
+  --bg: #F8FAFC;
+  --card: #FFFFFF;
+  --border: #E2E8F0;
+  --text: #1E293B;
+  --text-mid: #475569;
+  --text-light: #94A3B8;
+  --input-bg: #F8FAFC;
+  --input-focus: #EFF6FF;
+  --warn: #F59E0B;
+  --warn-light: #FEF3C7;
+  --error: #DC2626;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 20px rgba(0,0,0,0.08);
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --pri: #60A5FA;
+    --pri-light: #1E3A5F;
+    --pri-dark: #93C5FD;
+    --green: #34D399;
+    --green-light: #064E3B;
+    --bg: #0F172A;
+    --card: #1E293B;
+    --border: #334155;
+    --text: #F1F5F9;
+    --text-mid: #CBD5E1;
+    --text-light: #64748B;
+    --input-bg: #0F172A;
+    --input-focus: #1E3A5F;
+    --warn: #FBBF24;
+    --warn-light: #422006;
+    --shadow: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-lg: 0 4px 20px rgba(0,0,0,0.4);
+  }
+}
+:root[data-theme="dark"] {
+  --pri: #60A5FA;
+  --pri-light: #1E3A5F;
+  --pri-dark: #93C5FD;
+  --green: #34D399;
+  --green-light: #064E3B;
+  --bg: #0F172A;
+  --card: #1E293B;
+  --border: #334155;
+  --text: #F1F5F9;
+  --text-mid: #CBD5E1;
+  --text-light: #64748B;
+  --input-bg: #0F172A;
+  --input-focus: #1E3A5F;
+  --warn: #FBBF24;
+  --warn-light: #422006;
+  --shadow: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-lg: 0 4px 20px rgba(0,0,0,0.4);
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+* { box-sizing: inherit; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 100;
+}
+.brand {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+.brand span { color: var(--pri); }
+.lang-toggle {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.lang-btn {
+  padding: 6px 14px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-light);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.lang-btn.active {
+  background: var(--pri);
+  color: #fff;
+}
+
+/* Progress */
+.progress-bar {
+  background: var(--border);
+  height: 4px;
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 53px);
+  z-index: 99;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--pri);
+  transition: width 0.3s ease;
+  border-radius: 0 2px 2px 0;
+}
+
+/* Main */
+.container {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 32px 20px 100px;
+}
+
+/* Step card */
+.step { display: none; }
+.step.active { display: block; }
+.step-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px 28px;
+}
+@media (max-width: 500px) {
+  .step-card { padding: 24px 18px; }
+}
+.step-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  margin-bottom: 16px;
+  background: var(--pri-light);
+}
+.step-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+.step-explain {
+  font-size: 14px;
+  color: var(--text-mid);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+/* Fields */
+.field {
+  margin-bottom: 18px;
+}
+.field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+.field .hint {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 5px;
+  font-style: italic;
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 15px;
+  transition: all 0.15s;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--pri);
+  background: var(--input-focus);
+  box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
+}
+.field textarea { resize: vertical; min-height: 80px; }
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 500px) {
+  .field-row { grid-template-columns: 1fr; }
+}
+.field-error {
+  border-color: var(--error) !important;
+}
+.error-msg {
+  font-size: 12px;
+  color: var(--error);
+  margin-top: 4px;
+  display: none;
+}
+
+/* Choice cards (for scope) */
+.choice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 500px) {
+  .choice-grid { grid-template-columns: 1fr; }
+}
+.choice-card {
+  padding: 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card);
+}
+.choice-card:hover { border-color: var(--pri); }
+.choice-card.selected {
+  border-color: var(--pri);
+  background: var(--pri-light);
+}
+.choice-card .choice-icon { font-size: 22px; flex-shrink: 0; }
+.choice-card .choice-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+.choice-card .choice-sub {
+  font-size: 12px;
+  color: var(--text-light);
+  font-weight: 400;
+}
+
+/* Type cards (general vs specific) */
+.type-card {
+  padding: 18px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 10px;
+  background: var(--card);
+}
+.type-card:hover { border-color: var(--pri); }
+.type-card.selected {
+  border-color: var(--pri);
+  background: var(--pri-light);
+}
+.type-card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.type-card p {
+  font-size: 13px;
+  color: var(--text-mid);
+}
+
+/* Duration cards */
+.dur-card {
+  padding: 16px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 10px;
+  background: var(--card);
+}
+.dur-card:hover { border-color: var(--pri); }
+.dur-card.selected {
+  border-color: var(--pri);
+  background: var(--pri-light);
+}
+.dur-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+.dur-card p { font-size: 13px; color: var(--text-mid); }
+.date-fields { display: none; margin-top: 14px; }
+.date-fields.show { display: block; }
+
+/* Buttons */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+.btn {
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+}
+.btn-back {
+  background: transparent;
+  color: var(--text-mid);
+  border: 1px solid var(--border);
+}
+.btn-back:hover { background: var(--input-bg); }
+.btn-next {
+  background: var(--pri);
+  color: #fff;
+}
+.btn-next:hover { background: var(--pri-dark); }
+.btn-download {
+  background: var(--green);
+  color: #fff;
+  padding: 14px 32px;
+  font-size: 16px;
+}
+.btn-download:hover { opacity: 0.9; }
+.btn-start {
+  background: var(--pri);
+  color: #fff;
+  padding: 14px 36px;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Preview */
+.preview-box {
+  background: #fff;
+  color: #1a1a1a;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px 32px;
+  font-size: 13px;
+  line-height: 1.8;
+  max-height: 500px;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+}
+.preview-box h2 {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 20px;
+  letter-spacing: 0.04em;
+}
+.preview-box .sec { margin-bottom: 14px; }
+.preview-box .sec-title {
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #555;
+  margin-bottom: 4px;
+}
+.preview-box .sig-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 36px;
+}
+.preview-box .sig-line {
+  border-top: 1px solid #333;
+  padding-top: 6px;
+  margin-top: 48px;
+  font-size: 12px;
+  color: #555;
+}
+
+/* Intro */
+.intro-points {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+.intro-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.intro-point .ip-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--pri-light);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.intro-point .ip-text {
+  font-size: 14px;
+  color: var(--text-mid);
+}
+.intro-point .ip-text strong {
+  color: var(--text);
+  display: block;
+  margin-bottom: 1px;
+}
+
+/* Tooltip */
+.tip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--border);
+  color: var(--text-light);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: help;
+  margin-left: 6px;
+  position: relative;
+}
+.tip:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: var(--bg);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  white-space: normal;
+  width: 220px;
+  z-index: 10;
+  line-height: 1.4;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Changelog modal (admin only) */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: var(--card);
+  border-radius: var(--radius);
+  max-width: 540px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 28px 24px;
+  box-shadow: var(--shadow-lg);
+}
+.modal h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+.modal-close {
+  float: right;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--text-light);
+}
+.log-entry { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.log-entry:last-child { border-bottom: none; }
+.log-entry h3 { font-size: 14px; font-weight: 600; }
+.log-entry .log-date { font-size: 12px; color: var(--text-light); margin-bottom: 6px; }
+.log-entry ul { padding-left: 18px; font-size: 13px; color: var(--text-mid); }
+.log-entry li { margin-bottom: 3px; }
+
+/* Optional textarea in scope */
+.optional-extra { margin-top: 14px; }
+
+/* Document chooser */
+.doc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 20px 0;
+}
+@media (max-width: 500px) { .doc-grid { grid-template-columns: 1fr; } }
+.doc-card {
+  padding: 18px 16px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--card);
+  text-align: center;
+}
+.doc-card:hover { border-color: var(--pri); }
+.doc-card.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.doc-card .dc-icon { font-size: 28px; margin-bottom: 6px; }
+.doc-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.doc-card p { font-size: 12px; color: var(--text-light); }
+.doc-card .dc-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  background: var(--warn-light);
+  color: var(--warn);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-top: 6px;
+}
+
+/* Floating contact/suggest button */
+.fab {
+  position: fixed;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--pri);
+  color: #fff;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.fab:hover { transform: scale(1.08); }
+
+/* Contact modal */
+.contact-modal .cm-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+.contact-modal .cm-option {
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.15s;
+  background: var(--card);
+}
+.contact-modal .cm-option:hover { border-color: var(--pri); background: var(--pri-light); }
+.contact-modal .cm-option .cm-icon { font-size: 22px; }
+.contact-modal .cm-option .cm-text h3 { font-size: 14px; font-weight: 600; margin-bottom: 1px; }
+.contact-modal .cm-option .cm-text p { font-size: 12px; color: var(--text-mid); }
+.suggest-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 80px;
+  margin: 12px 0;
+}
+.suggest-form textarea:focus {
+  outline: none;
+  border-color: var(--pri);
+  background: var(--input-focus);
+}
+.suggest-thanks {
+  text-align: center;
+  padding: 20px;
+  font-size: 15px;
+  color: var(--green);
+  font-weight: 500;
+}
+
+/* Jurisdiction notice */
+.jur-notice {
+  background: var(--warn-light);
+  border: 1px solid var(--warn);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+}
+.jur-notice .jn-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.jur-notice ul { padding-left: 16px; margin-top: 6px; }
+.jur-notice li { margin-bottom: 3px; }
+.disclaimer-box {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="brand">document<span>generator</span>.ai</div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')" id="btn-en">🇬🇧 EN</button>
+    <button class="lang-btn" onclick="setLang('es')" id="btn-es">🇪🇸 ES</button>
+    <button class="lang-btn" onclick="setLang('fr')" id="btn-fr">🇫🇷 FR</button>
+    <button class="lang-btn" onclick="setLang('de')" id="btn-de">🇩🇪 DE</button>
+    <button class="lang-btn" onclick="setLang('nl')" id="btn-nl">🇳🇱 NL</button>
+  </div>
+</header>
+
+<div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+
+<div class="container">
+
+  <!-- STEP 0: Document Chooser -->
+  <div class="step active" id="step-0">
+    <div class="step-card">
+      <div class="step-icon">📄</div>
+      <h1 class="step-title" data-i18n="chooser-title">What document do you need?</h1>
+      <p class="step-explain" data-i18n="chooser-explain">Pick a document type below. We'll guide you through it step by step.</p>
+
+      <div class="doc-grid">
+        <div class="doc-card" onclick="selectDocType('poa')">
+          <div class="dc-icon">📝</div>
+          <h3 data-i18n="dt-poa-title">Power of Attorney</h3>
+          <p data-i18n="dt-poa-desc">Let someone act on your behalf</p>
+        </div>
+        <div class="doc-card" onclick="selectDocType('rental')">
+          <div class="dc-icon">🏠</div>
+          <h3 data-i18n="dt-rental-title">Rental Agreement</h3>
+          <p data-i18n="dt-rental-desc">Lease a property or room</p>
+        </div>
+        <div class="doc-card disabled">
+          <div class="dc-icon">💰</div>
+          <h3 data-i18n="dt-loan-title">Loan Agreement</h3>
+          <p data-i18n="dt-loan-desc">Lend or borrow money</p>
+          <span class="dc-badge" data-i18n="dt-soon">Coming soon</span>
+        </div>
+        <div class="doc-card disabled">
+          <div class="dc-icon">👔</div>
+          <h3 data-i18n="dt-employment-title">Employment Contract</h3>
+          <p data-i18n="dt-employment-desc">Hire an employee</p>
+          <span class="dc-badge" data-i18n="dt-soon">Coming soon</span>
+        </div>
+        <div class="doc-card disabled">
+          <div class="dc-icon">🤫</div>
+          <h3 data-i18n="dt-nda-title">Non-Disclosure Agreement</h3>
+          <p data-i18n="dt-nda-desc">Protect confidential information</p>
+          <span class="dc-badge" data-i18n="dt-soon">Coming soon</span>
+        </div>
+        <div class="doc-card disabled">
+          <div class="dc-icon">📜</div>
+          <h3 data-i18n="dt-will-title">Last Will & Testament</h3>
+          <p data-i18n="dt-will-desc">Set out your final wishes</p>
+          <span class="dc-badge" data-i18n="dt-soon">Coming soon</span>
+        </div>
+      </div>
+
+      <div class="intro-points">
+        <div class="intro-point">
+          <div class="ip-icon">✏️</div>
+          <div class="ip-text">
+            <strong data-i18n="intro-p1-title">Fill in a few details</strong>
+            <span data-i18n="intro-p1-text">We ask only what's needed — nothing more.</span>
+          </div>
+        </div>
+        <div class="intro-point">
+          <div class="ip-icon">👀</div>
+          <div class="ip-text">
+            <strong data-i18n="intro-p2-title">Check the result</strong>
+            <span data-i18n="intro-p2-text">See exactly what the document looks like before downloading.</span>
+          </div>
+        </div>
+        <div class="intro-point">
+          <div class="ip-icon">📥</div>
+          <div class="ip-text">
+            <strong data-i18n="intro-p3-title">Download and sign</strong>
+            <span data-i18n="intro-p3-text">Get a PDF ready to print and sign.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1: Who gives the POA? -->
+  <div class="step" id="step-1">
+    <div class="step-card">
+      <div class="step-icon">🧑</div>
+      <h2 class="step-title" data-i18n="s1-title">Who is giving the power of attorney?</h2>
+      <p class="step-explain" data-i18n="s1-explain">This is the person who wants someone else to act on their behalf.</p>
+      <div class="field">
+        <label data-i18n="lbl-name">Full name</label>
+        <div class="hint" data-i18n="hint-name">As it appears on your ID or passport</div>
+        <input type="text" id="g1-name" data-i18n-placeholder="ph-name">
+        <div class="error-msg" id="err-g1-name" data-i18n="err-required">This field is required</div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-id">ID or passport number <span class="tip" data-tip="">?</span></label>
+        <input type="text" id="g1-id" data-i18n-placeholder="ph-id">
+        <div class="error-msg" id="err-g1-id" data-i18n="err-required">This field is required</div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-address">Address</label>
+        <div class="hint" data-i18n="hint-address">Street, number, and city</div>
+        <input type="text" id="g1-address" data-i18n-placeholder="ph-address">
+        <div class="error-msg" id="err-g1-address" data-i18n="err-required">This field is required</div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-country">Country</label>
+        <input type="text" id="g1-country">
+      </div>
+      <div class="nav">
+        <button class="btn btn-back" onclick="goStep(0)" data-i18n="btn-back">Back</button>
+        <button class="btn btn-next" onclick="validateAndGo(1, 2)" data-i18n="btn-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Who receives the POA? -->
+  <div class="step" id="step-2">
+    <div class="step-card">
+      <div class="step-icon">🤝</div>
+      <h2 class="step-title" data-i18n="s2-title">Who is receiving the power of attorney?</h2>
+      <p class="step-explain" data-i18n="s2-explain">This is the person who will act on behalf of the person above — for example, a family member, friend, or lawyer.</p>
+      <div class="field">
+        <label data-i18n="lbl-name">Full name</label>
+        <div class="hint" data-i18n="hint-name">As it appears on your ID or passport</div>
+        <input type="text" id="g2-name" data-i18n-placeholder="ph-name">
+        <div class="error-msg" id="err-g2-name" data-i18n="err-required">This field is required</div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-id">ID or passport number</label>
+        <input type="text" id="g2-id" data-i18n-placeholder="ph-id">
+        <div class="error-msg" id="err-g2-id" data-i18n="err-required">This field is required</div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-address">Address</label>
+        <div class="hint" data-i18n="hint-address">Street, number, and city</div>
+        <input type="text" id="g2-address" data-i18n-placeholder="ph-address">
+        <div class="error-msg" id="err-g2-address" data-i18n="err-required">This field is required</div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-country">Country</label>
+        <input type="text" id="g2-country">
+      </div>
+      <div class="nav">
+        <button class="btn btn-back" onclick="goStep(1)" data-i18n="btn-back">Back</button>
+        <button class="btn btn-next" onclick="validateAndGo(2, 3)" data-i18n="btn-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: What for? -->
+  <div class="step" id="step-3">
+    <div class="step-card">
+      <div class="step-icon">📋</div>
+      <h2 class="step-title" data-i18n="s3-title">What is this power of attorney for?</h2>
+      <p class="step-explain" data-i18n="s3-explain">Choose one option. A general power of attorney covers everything. A specific one only covers what you select.</p>
+
+      <div class="type-card selected" id="tc-general" onclick="setPoaType('general')">
+        <h3 data-i18n="opt-general-title">Everything</h3>
+        <p data-i18n="opt-general-desc">The other person can do anything on your behalf — bank, government, legal, and more.</p>
+      </div>
+      <div class="type-card" id="tc-specific" onclick="setPoaType('specific')">
+        <h3 data-i18n="opt-specific-title">Only specific things</h3>
+        <p data-i18n="opt-specific-desc">You choose exactly what the other person is allowed to do.</p>
+      </div>
+
+      <div id="scope-choices" style="display:none; margin-top:16px;">
+        <p style="font-size:14px; font-weight:500; margin-bottom:10px;" data-i18n="lbl-pick-scope">Pick what applies:</p>
+        <div class="choice-grid" id="scope-grid"></div>
+        <div class="optional-extra">
+          <div class="field" style="margin-bottom:0;">
+            <label data-i18n="lbl-extra">Anything else? <span style="font-weight:400;color:var(--text-light)">(optional)</span></label>
+            <textarea id="scope-extra" rows="2" data-i18n-placeholder="ph-extra"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-back" onclick="goStep(2)" data-i18n="btn-back">Back</button>
+        <button class="btn btn-next" onclick="goStep(4)" data-i18n="btn-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: How long? -->
+  <div class="step" id="step-4">
+    <div class="step-card">
+      <div class="step-icon">📅</div>
+      <h2 class="step-title" data-i18n="s4-title">How long should it last?</h2>
+      <p class="step-explain" data-i18n="s4-explain">Choose how long this power of attorney stays valid.</p>
+
+      <div class="dur-card selected" id="dc-indef" onclick="setDuration('indefinite')">
+        <h3 data-i18n="opt-indef-title">Until cancelled</h3>
+        <p data-i18n="opt-indef-desc">It stays valid until you cancel it in writing.</p>
+      </div>
+      <div class="dur-card" id="dc-fixed" onclick="setDuration('fixed')">
+        <h3 data-i18n="opt-fixed-title">Set a time period</h3>
+        <p data-i18n="opt-fixed-desc">You choose a start and end date.</p>
+      </div>
+
+      <div class="date-fields" id="date-fields">
+        <div class="field-row">
+          <div class="field">
+            <label data-i18n="lbl-from">From</label>
+            <input type="date" id="date-start">
+          </div>
+          <div class="field">
+            <label data-i18n="lbl-until">Until</label>
+            <input type="date" id="date-end">
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;">
+        <div class="field">
+          <label data-i18n="lbl-place">Where is this being signed?</label>
+          <input type="text" id="doc-place">
+        </div>
+        <div class="field">
+          <label data-i18n="lbl-date">Date of the document</label>
+          <input type="date" id="doc-date">
+        </div>
+        <div class="field">
+          <label data-i18n="lbl-law">Which country's laws apply? <span class="tip" data-tip="">?</span></label>
+          <input type="text" id="gov-law">
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-back" onclick="goStep(3)" data-i18n="btn-back">Back</button>
+        <button class="btn btn-next" onclick="goStep(5)" data-i18n="btn-preview">Check the document</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: Preview & Download -->
+  <div class="step" id="step-5">
+    <div class="step-card" style="padding:20px 24px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+        <h2 class="step-title" style="margin:0;" data-i18n="s5-title">Your document</h2>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-back" onclick="goStep(1)" data-i18n="btn-edit">Edit</button>
+          <button class="btn btn-download" onclick="downloadPDF()" data-i18n="btn-download">⬇ Download PDF</button>
+        </div>
+      </div>
+      <p class="step-explain" data-i18n="s5-explain">Check everything below. If something is wrong, click Edit. If it looks good, download the PDF.</p>
+    </div>
+    <div class="preview-box" id="preview"></div>
+    <div style="text-align:center;margin-top:16px;">
+      <button class="btn btn-download" onclick="downloadPDF()" data-i18n="btn-download">⬇ Download PDF</button>
+    </div>
+  </div>
+
+  <!-- ===== RENTAL AGREEMENT STEPS ===== -->
+
+  <!-- RENTAL STEP 1: Landlord -->
+  <div class="step" id="step-r1">
+    <div class="step-card">
+      <div class="step-icon">🏠</div>
+      <h2 class="step-title" data-i18n="rs1-title">Who is the landlord?</h2>
+      <p class="step-explain" data-i18n="rs1-explain">The person or company renting out the property.</p>
+      <div class="field">
+        <label data-i18n="lbl-name">Full name</label>
+        <div class="hint" data-i18n="hint-name">As it appears on your ID or passport</div>
+        <input type="text" id="rl-name" data-i18n-placeholder="ph-name">
+        <div class="error-msg" id="err-rl-name" data-i18n="err-required">This field is required</div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-id">ID or passport number</label>
+        <input type="text" id="rl-id" data-i18n-placeholder="ph-id">
+        <div class="error-msg" id="err-rl-id" data-i18n="err-required">This field is required</div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-address">Address</label>
+        <div class="hint" data-i18n="hint-address">Street, number, and city</div>
+        <input type="text" id="rl-address" data-i18n-placeholder="ph-address">
+        <div class="error-msg" id="err-rl-address" data-i18n="err-required">This field is required</div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-country">Country</label>
+        <input type="text" id="rl-country">
+      </div>
+      <div class="nav">
+        <button class="btn btn-back" onclick="goRentalStep(0)" data-i18n="btn-back">Back</button>
+        <button class="btn btn-next" onclick="validateRentalAndGo('r1','r2')" data-i18n="btn-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RENTAL STEP 2: Tenant -->
+  <div class="step" id="step-r2">
+    <div class="step-card">
+      <div class="step-icon">🔑</div>
+      <h2 class="step-title" data-i18n="rs2-title">Who is the tenant?</h2>
+      <p class="step-explain" data-i18n="rs2-explain">The person renting the property.</p>
+      <div class="field">
+        <label data-i18n="lbl-name">Full name</label>
+        <div class="hint" data-i18n="hint-name">As it appears on your ID or passport</div>
+        <input type="text" id="rt-name" data-i18n-placeholder="ph-name">
+        <div class="error-msg" id="err-rt-name" data-i18n="err-required">This field is required</div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-id">ID or passport number</label>
+        <input type="text" id="rt-id" data-i18n-placeholder="ph-id">
+        <div class="error-msg" id="err-rt-id" data-i18n="err-required">This field is required</div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-address">Address</label>
+        <div class="hint" data-i18n="hint-address">Street, number, and city</div>
+        <input type="text" id="rt-address" data-i18n-placeholder="ph-address">
+        <div class="error-msg" id="err-rt-address" data-i18n="err-required">This field is required</div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-country">Country</label>
+        <input type="text" id="rt-country">
+      </div>
+      <div class="nav">
+        <button class="btn btn-back" onclick="goRentalStep('r1')" data-i18n="btn-back">Back</button>
+        <button class="btn btn-next" onclick="validateRentalAndGo('r2','r3')" data-i18n="btn-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RENTAL STEP 3: Property details -->
+  <div class="step" id="step-r3">
+    <div class="step-card">
+      <div class="step-icon">🏢</div>
+      <h2 class="step-title" data-i18n="rs3-title">Property details</h2>
+      <p class="step-explain" data-i18n="rs3-explain">Describe the property being rented.</p>
+      <div class="field">
+        <label data-i18n="lbl-property-addr">Property address</label>
+        <input type="text" id="rp-address" data-i18n-placeholder="ph-address">
+        <div class="error-msg" id="err-rp-address" data-i18n="err-required">This field is required</div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-property-type">Property type</label>
+        <div class="choice-grid" id="prop-type-grid"></div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl-furnished">Furnished?</label>
+        <div class="choice-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="choice-card" id="furn-no" onclick="setFurnished(false)">
+            <div class="choice-text" data-i18n="opt-no">No</div>
+          </div>
+          <div class="choice-card" id="furn-yes" onclick="setFurnished(true)">
+            <div class="choice-text" data-i18n="opt-yes">Yes</div>
+          </div>
+        </div>
+      </div>
+      <div class="nav">
+        <button class="btn btn-back" onclick="goRentalStep('r2')" data-i18n="btn-back">Back</button>
+        <button class="btn btn-next" onclick="validateRentalAndGo('r3','r4')" data-i18n="btn-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RENTAL STEP 4: Rent & payment -->
+  <div class="step" id="step-r4">
+    <div class="step-card">
+      <div class="step-icon">💰</div>
+      <h2 class="step-title" data-i18n="rs4-title">Rent & payment</h2>
+      <p class="step-explain" data-i18n="rs4-explain">Set the monthly rent, deposit, and payment terms.</p>
+      <div class="field-row">
+        <div class="field">
+          <label data-i18n="lbl-rent">Monthly rent</label>
+          <input type="number" id="r-rent" min="0" step="0.01">
+        </div>
+        <div class="field">
+          <label data-i18n="lbl-currency">Currency</label>
+          <select id="r-currency">
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+            <option value="ANG">ANG (ƒ)</option>
+            <option value="MXN">MXN ($)</option>
+            <option value="COP">COP ($)</option>
+            <option value="BRL">BRL (R$)</option>
+            <option value="CHF">CHF</option>
+            <option value="ARS">ARS ($)</option>
+            <option value="PEN">PEN (S/)</option>
+            <option value="CLP">CLP ($)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label data-i18n="lbl-deposit">Security deposit</label>
+          <input type="number" id="r-deposit" min="0" step="0.01">
+        </div>
+        <div class="field">
+          <label data-i18n="lbl-payment-day">Payment due by day of month</label>
+          <input type="number" id="r-payday" min="1" max="31" value="1">
+        </div>
+      </div>
+      <div id="jur-notice-rent"></div>
+      <div class="nav">
+        <button class="btn btn-back" onclick="goRentalStep('r3')" data-i18n="btn-back">Back</button>
+        <button class="btn btn-next" onclick="goRentalStep('r5')" data-i18n="btn-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RENTAL STEP 5: Duration -->
+  <div class="step" id="step-r5">
+    <div class="step-card">
+      <div class="step-icon">📅</div>
+      <h2 class="step-title" data-i18n="s4-title">How long should it last?</h2>
+      <p class="step-explain" data-i18n="s4-explain">Choose how long this power of attorney stays valid.</p>
+      <div class="dur-card selected" id="rdc-fixed" onclick="setRentalDuration('fixed')">
+        <h3 data-i18n="opt-fixed-title">Set a time period</h3>
+        <p data-i18n="opt-fixed-desc">You choose a start and end date.</p>
+      </div>
+      <div class="dur-card" id="rdc-indef" onclick="setRentalDuration('indefinite')">
+        <h3 data-i18n="opt-indef-title">Until cancelled</h3>
+        <p data-i18n="opt-indef-desc">It stays valid until you cancel it in writing.</p>
+      </div>
+      <div class="field-row" id="rental-dates" style="margin-top:14px;">
+        <div class="field">
+          <label data-i18n="lbl-from">From</label>
+          <input type="date" id="r-date-start">
+        </div>
+        <div class="field">
+          <label data-i18n="lbl-until">Until</label>
+          <input type="date" id="r-date-end">
+        </div>
+      </div>
+      <div style="margin-top:14px;">
+        <div class="field">
+          <label data-i18n="lbl-place">Where is this being signed?</label>
+          <input type="text" id="r-place">
+        </div>
+        <div class="field">
+          <label data-i18n="lbl-date">Date of the document</label>
+          <input type="date" id="r-doc-date">
+        </div>
+        <div class="field">
+          <label data-i18n="lbl-law">Which country's laws apply?</label>
+          <input type="text" id="r-law">
+        </div>
+      </div>
+      <div id="jur-notice-duration"></div>
+      <div class="nav">
+        <button class="btn btn-back" onclick="goRentalStep('r4')" data-i18n="btn-back">Back</button>
+        <button class="btn btn-next" onclick="goRentalStep('r6')" data-i18n="btn-preview">Check the document</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RENTAL STEP 6: Preview & Download -->
+  <div class="step" id="step-r6">
+    <div class="step-card" style="padding:20px 24px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+        <h2 class="step-title" style="margin:0;" data-i18n="s5-title">Your document</h2>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-back" onclick="goRentalStep('r1')" data-i18n="btn-edit">Edit</button>
+          <button class="btn btn-download" onclick="downloadRentalPDF()" data-i18n="btn-download">⬇ Download PDF</button>
+        </div>
+      </div>
+      <p class="step-explain" data-i18n="s5-explain">Check everything below. If something is wrong, click Edit. If it looks good, download the PDF.</p>
+    </div>
+    <div class="preview-box" id="rental-preview"></div>
+    <div class="disclaimer-box" data-i18n="rental-disclaimer">⚠ This document is generated as a starting point. Rental laws vary by country and region. We strongly recommend having this agreement reviewed by a local legal professional before signing.</div>
+    <div style="text-align:center;margin-top:16px;">
+      <button class="btn btn-download" onclick="downloadRentalPDF()" data-i18n="btn-download">⬇ Download PDF</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Changelog (admin only — ?admin in URL) -->
+<div class="modal-overlay" id="changelog-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('changelog-modal').classList.remove('show')">&times;</button>
+    <h2>Changelog — documentgenerator.ai</h2>
+    <div class="log-entry">
+      <h3>v4.0</h3>
+      <div class="log-date">1 oktober 2026</div>
+      <ul>
+        <li>Huurcontract (Rental Agreement) volledig uitgebouwd met 6-staps flow</li>
+        <li>Jurisdictie-detectie: wettelijke opmerkingen per land (NL, DE, FR, ES, Sint Maarten)</li>
+        <li>Waarschuwingen over max borg, minimale huurtermijn, opzegtermijnen per jurisdictie</li>
+        <li>Disclaimer op elk huurcontract: "laat controleren door een lokale jurist"</li>
+        <li>Pandtype-keuze: woning, appartement, kamer, bedrijfsruimte, anders</li>
+        <li>Gemeubileerd ja/nee toggle</li>
+        <li>Huur, valuta (11 munteenheden), borg, betaaldag</li>
+        <li>Valuta automatisch ingesteld op basis van land (EUR, ANG, GBP, USD)</li>
+        <li>Preview en PDF voor huurcontract met alle clausules</li>
+        <li>NDA en Testament als documenttypes toegevoegd (coming soon)</li>
+      </ul>
+    </div>
+    <div class="log-entry">
+      <h3>v3.1</h3>
+      <div class="log-date">1 oktober 2026</div>
+      <ul>
+        <li>Taalknopjes herordend van groot naar klein (EN → ES → FR → DE → NL) met landsvlaggetjes</li>
+        <li>Documentkeuze-scherm: gebruiker kiest eerst welk document (volmacht, huurcontract, etc.)</li>
+        <li>Huurcontract als documenttype toegevoegd (placeholder — basisflow in volgende versie)</li>
+        <li>Floating 💬 contact-knop met suggestie- en feedbackformulier</li>
+        <li>Suggesties en feedback worden lokaal opgeslagen (backend-integratie later)</li>
+        <li>Nieuwe vertalingen voor documentkeuze, huurcontract en contactformulier in alle 5 talen</li>
+      </ul>
+    </div>
+    <div class="log-entry">
+      <h3>v3.0</h3>
+      <div class="log-date">1 oktober 2026</div>
+      <ul>
+        <li>5 talen: Engels, Nederlands, Spaans, Frans, Duits — zowel UI als gegenereerd document</li>
+        <li>Engels is nu standaardtaal (was locatieafhankelijk)</li>
+        <li>Automatische taalkeuze per tijdzone: ES voor Spaanstalige landen, FR voor Franstalige, DE voor Duitstalige, NL voor Nederland/ABC-eilanden</li>
+        <li>Locatiedetectie uitgebreid: Puerto Rico, Dominicaanse Republiek, Mexico, Colombia, Peru, Chili, Argentinië, Venezuela, Costa Rica, Panama, Wenen, Luxemburg, Marokko, Senegal, Ivoorkust</li>
+        <li>Datumnotatie per taal: "1. Oktober 2026" (DE), "1 de octubre de 2026" (ES)</li>
+        <li>Adressuggesties in alle 5 talen per regio</li>
+      </ul>
+    </div>
+    <div class="log-entry">
+      <h3>v2.1</h3>
+      <div class="log-date">1 oktober 2026</div>
+      <ul>
+        <li>Automatische locatiedetectie via tijdzone van de browser</li>
+        <li>Standaardland, ondertekeningsplaats, toepasselijk recht en adresvoorbeeld worden aangepast per regio</li>
+        <li>50+ tijdzones ondersteund: Caribisch gebied, Europa, Amerika, Azië, Afrika, Oceanië</li>
+        <li>Standaardtaal (NL/EN) wordt automatisch bepaald op basis van regio</li>
+      </ul>
+    </div>
+    <div class="log-entry">
+      <h3>v2.0</h3>
+      <div class="log-date">1 oktober 2026</div>
+      <ul>
+        <li>Volledige UX-herziening: simpelere taal, één stap per scherm</li>
+        <li>Introscherm met uitleg "Wat is een volmacht?"</li>
+        <li>Icoontjes bij elke stap en bij de scope-keuzes</li>
+        <li>Tooltips met uitleg bij juridische termen</li>
+        <li>Voortgangsbalk bovenaan</li>
+        <li>Veldvalidatie op verplichte velden</li>
+        <li>Scope-keuze met visuele kaarten in plaats van checkboxes</li>
+        <li>Vereenvoudigde NL/EN teksten — begrijpelijk zonder juridische achtergrond</li>
+        <li>Changelog alleen zichtbaar via ?admin in URL</li>
+      </ul>
+    </div>
+    <div class="log-entry">
+      <h3>v1.1</h3>
+      <div class="log-date">1 oktober 2026</div>
+      <ul>
+        <li>Rebrand naar documentgenerator.ai — eigen merk, los van The Paperwork Professional</li>
+      </ul>
+    </div>
+    <div class="log-entry">
+      <h3>v1.0</h3>
+      <div class="log-date">1 oktober 2026</div>
+      <ul>
+        <li>Eerste release: Power of Attorney (volmacht) generator</li>
+        <li>Modulaire opzet voor toekomstige documenttypes</li>
+        <li>NL/EN taalwissel met volledige vertaling van UI en document</li>
+        <li>Stapsgewijs formulier: volmachtgever, gevolmachtigde, reikwijdte, duur</li>
+        <li>Algemene of specifieke volmacht met keuzevelden</li>
+        <li>Live documentvoorvertoning</li>
+        <li>PDF-download (jsPDF)</li>
+        <li>Dark mode ondersteuning</li>
+        <li>Responsief ontwerp (desktop + mobiel)</li>
+        <li>Sint Maarten als standaard jurisdictie</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Floating contact/suggest button -->
+<button class="fab" onclick="toggleContact()" title="Contact & suggestions">💬</button>
+
+<!-- Contact modal -->
+<div class="modal-overlay" id="contact-modal">
+  <div class="modal contact-modal">
+    <button class="modal-close" onclick="toggleContact()">&times;</button>
+    <h2 data-i18n="contact-title">How can we help?</h2>
+    <div id="contact-options" class="cm-options">
+      <div class="cm-option" onclick="showSuggestForm()">
+        <div class="cm-icon">💡</div>
+        <div class="cm-text">
+          <h3 data-i18n="contact-suggest-title">Suggest a document</h3>
+          <p data-i18n="contact-suggest-desc">Tell us what other documents you'd like us to add</p>
+        </div>
+      </div>
+      <div class="cm-option" onclick="showFeedbackForm()">
+        <div class="cm-icon">📣</div>
+        <div class="cm-text">
+          <h3 data-i18n="contact-feedback-title">Give feedback</h3>
+          <p data-i18n="contact-feedback-desc">Report a problem or tell us how to improve</p>
+        </div>
+      </div>
+    </div>
+    <div id="suggest-form" class="suggest-form" style="display:none;">
+      <p data-i18n="suggest-prompt" style="font-size:14px;color:var(--text-mid);margin-bottom:4px;">What document would you like to create?</p>
+      <textarea id="suggest-text" data-i18n-placeholder="suggest-ph"></textarea>
+      <button class="btn btn-next" style="width:100%;" onclick="submitSuggestion('suggest')" data-i18n="suggest-send">Send suggestion</button>
+    </div>
+    <div id="feedback-form" class="suggest-form" style="display:none;">
+      <p data-i18n="feedback-prompt" style="font-size:14px;color:var(--text-mid);margin-bottom:4px;">What can we do better?</p>
+      <textarea id="feedback-text" data-i18n-placeholder="feedback-ph"></textarea>
+      <button class="btn btn-next" style="width:100%;" onclick="submitSuggestion('feedback')" data-i18n="feedback-send">Send feedback</button>
+    </div>
+    <div id="suggest-thanks" class="suggest-thanks" style="display:none;">
+      <div style="font-size:32px;margin-bottom:8px;">🙏</div>
+      <span data-i18n="suggest-thanks">Thank you! We'll review your message.</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ====== Translation — EN, NL, ES, FR, DE ======
+const T = {
+  // Document chooser
+  'chooser-title':   { en:'What document do you need?', nl:'Welk document heb je nodig?', es:'¿Qué documento necesitas?', fr:'De quel document avez-vous besoin ?', de:'Welches Dokument brauchen Sie?' },
+  'chooser-explain': { en:'Pick a document type below. We\'ll guide you through it step by step.', nl:'Kies hieronder een documenttype. We begeleiden je stap voor stap.', es:'Elige un tipo de documento. Te guiaremos paso a paso.', fr:'Choisissez un type de document ci-dessous. Nous vous guiderons étape par étape.', de:'Wählen Sie unten einen Dokumenttyp. Wir führen Sie Schritt für Schritt.' },
+  'dt-poa-title':    { en:'Power of Attorney', nl:'Volmacht', es:'Poder notarial', fr:'Procuration', de:'Vollmacht' },
+  'dt-poa-desc':     { en:'Let someone act on your behalf', nl:'Laat iemand namens jou handelen', es:'Permite que alguien actúe en tu nombre', fr:'Permettre à quelqu\'un d\'agir en votre nom', de:'Jemanden in Ihrem Namen handeln lassen' },
+  'dt-rental-title': { en:'Rental Agreement', nl:'Huurcontract', es:'Contrato de alquiler', fr:'Contrat de location', de:'Mietvertrag' },
+  'dt-rental-desc':  { en:'Lease a property or room', nl:'Verhuur een woning of kamer', es:'Alquilar una propiedad o habitación', fr:'Louer un bien ou une chambre', de:'Eine Immobilie oder ein Zimmer vermieten' },
+  'dt-loan-title':   { en:'Loan Agreement', nl:'Leenovereenkomst', es:'Contrato de préstamo', fr:'Contrat de prêt', de:'Darlehensvertrag' },
+  'dt-loan-desc':    { en:'Lend or borrow money', nl:'Geld lenen of uitlenen', es:'Prestar o pedir dinero prestado', fr:'Prêter ou emprunter de l\'argent', de:'Geld verleihen oder leihen' },
+  'dt-employment-title': { en:'Employment Contract', nl:'Arbeidsovereenkomst', es:'Contrato de trabajo', fr:'Contrat de travail', de:'Arbeitsvertrag' },
+  'dt-employment-desc':  { en:'Hire an employee', nl:'Neem een werknemer aan', es:'Contratar a un empleado', fr:'Embaucher un employé', de:'Einen Mitarbeiter einstellen' },
+  'dt-nda-title':    { en:'Non-Disclosure Agreement', nl:'Geheimhoudingsverklaring', es:'Acuerdo de confidencialidad', fr:'Accord de confidentialité', de:'Geheimhaltungsvereinbarung' },
+  'dt-nda-desc':     { en:'Protect confidential information', nl:'Bescherm vertrouwelijke informatie', es:'Proteger información confidencial', fr:'Protéger des informations confidentielles', de:'Vertrauliche Informationen schützen' },
+  'dt-will-title':   { en:'Last Will & Testament', nl:'Testament', es:'Testamento', fr:'Testament', de:'Testament' },
+  'dt-will-desc':    { en:'Set out your final wishes', nl:'Leg je laatste wensen vast', es:'Establece tus últimas voluntades', fr:'Établissez vos dernières volontés', de:'Legen Sie Ihren letzten Willen fest' },
+  'dt-soon':         { en:'Coming soon', nl:'Binnenkort', es:'Próximamente', fr:'Bientôt', de:'Demnächst' },
+
+  // Contact/suggest
+  'contact-title':        { en:'How can we help?', nl:'Hoe kunnen we helpen?', es:'¿Cómo podemos ayudar?', fr:'Comment pouvons-nous vous aider ?', de:'Wie können wir helfen?' },
+  'contact-suggest-title':{ en:'Suggest a document', nl:'Stel een document voor', es:'Sugerir un documento', fr:'Suggérer un document', de:'Dokument vorschlagen' },
+  'contact-suggest-desc': { en:'Tell us what other documents you\'d like us to add', nl:'Vertel ons welke documenten je nog wilt', es:'Dinos qué otros documentos te gustaría que agreguemos', fr:'Dites-nous quels autres documents vous aimeriez voir', de:'Sagen Sie uns, welche Dokumente Sie sich wünschen' },
+  'contact-feedback-title':{ en:'Give feedback', nl:'Geef feedback', es:'Dar opinión', fr:'Donner un avis', de:'Feedback geben' },
+  'contact-feedback-desc':{ en:'Report a problem or tell us how to improve', nl:'Meld een probleem of vertel hoe we kunnen verbeteren', es:'Reporta un problema o dinos cómo mejorar', fr:'Signalez un problème ou dites-nous comment nous améliorer', de:'Melden Sie ein Problem oder sagen Sie uns, wie wir uns verbessern können' },
+  'suggest-prompt':       { en:'What document would you like to create?', nl:'Welk document zou je willen maken?', es:'¿Qué documento te gustaría crear?', fr:'Quel document aimeriez-vous créer ?', de:'Welches Dokument würden Sie gerne erstellen?' },
+  'suggest-ph':           { en:'E.g. a non-disclosure agreement, a will, a receipt...', nl:'Bijv. een geheimhoudingsverklaring, een testament, een kwitantie...', es:'Ej. un acuerdo de confidencialidad, un testamento, un recibo...', fr:'Ex. un accord de confidentialité, un testament, un reçu...', de:'Z.B. eine Vertraulichkeitsvereinbarung, ein Testament, eine Quittung...' },
+  'suggest-send':         { en:'Send suggestion', nl:'Verstuur suggestie', es:'Enviar sugerencia', fr:'Envoyer la suggestion', de:'Vorschlag senden' },
+  'feedback-prompt':      { en:'What can we do better?', nl:'Wat kunnen we beter doen?', es:'¿Qué podemos hacer mejor?', fr:'Que pouvons-nous améliorer ?', de:'Was können wir besser machen?' },
+  'feedback-ph':          { en:'Describe your feedback or the problem...', nl:'Beschrijf je feedback of het probleem...', es:'Describe tu opinión o el problema...', fr:'Décrivez votre avis ou le problème...', de:'Beschreiben Sie Ihr Feedback oder das Problem...' },
+  'feedback-send':        { en:'Send feedback', nl:'Verstuur feedback', es:'Enviar opinión', fr:'Envoyer l\'avis', de:'Feedback senden' },
+  'suggest-thanks':       { en:'Thank you! We\'ll review your message.', nl:'Bedankt! We bekijken je bericht.', es:'¡Gracias! Revisaremos tu mensaje.', fr:'Merci ! Nous examinerons votre message.', de:'Danke! Wir werden Ihre Nachricht prüfen.' },
+
+  // Rental agreement
+  'r-intro-title':   { en:'Create a Rental Agreement', nl:'Maak een huurcontract', es:'Crear un contrato de alquiler', fr:'Créer un contrat de location', de:'Mietvertrag erstellen' },
+  'r-intro-explain': { en:'A rental agreement sets out the terms between a landlord and tenant for renting a property or room.', nl:'Een huurcontract legt de afspraken vast tussen verhuurder en huurder voor het huren van een woning of kamer.', es:'Un contrato de alquiler establece los términos entre el propietario y el inquilino para alquilar una propiedad o habitación.', fr:'Un contrat de location définit les conditions entre le bailleur et le locataire pour la location d\'un bien ou d\'une chambre.', de:'Ein Mietvertrag regelt die Bedingungen zwischen Vermieter und Mieter für die Vermietung einer Immobilie oder eines Zimmers.' },
+  'rs1-title':       { en:'Who is the landlord?', nl:'Wie is de verhuurder?', es:'¿Quién es el propietario?', fr:'Qui est le bailleur ?', de:'Wer ist der Vermieter?' },
+  'rs1-explain':     { en:'The person or company renting out the property.', nl:'De persoon of het bedrijf dat het pand verhuurt.', es:'La persona o empresa que alquila la propiedad.', fr:'La personne ou l\'entreprise qui loue le bien.', de:'Die Person oder Firma, die das Objekt vermietet.' },
+  'rs2-title':       { en:'Who is the tenant?', nl:'Wie is de huurder?', es:'¿Quién es el inquilino?', fr:'Qui est le locataire ?', de:'Wer ist der Mieter?' },
+  'rs2-explain':     { en:'The person renting the property.', nl:'De persoon die het pand huurt.', es:'La persona que alquila la propiedad.', fr:'La personne qui loue le bien.', de:'Die Person, die das Objekt mietet.' },
+  'rs3-title':       { en:'Property details', nl:'Gegevens van het pand', es:'Datos de la propiedad', fr:'Détails du bien', de:'Angaben zum Mietobjekt' },
+  'rs3-explain':     { en:'Describe the property being rented.', nl:'Beschrijf het pand dat verhuurd wordt.', es:'Describe la propiedad que se alquila.', fr:'Décrivez le bien loué.', de:'Beschreiben Sie das Mietobjekt.' },
+  'lbl-property-addr':  { en:'Property address', nl:'Adres van het pand', es:'Dirección de la propiedad', fr:'Adresse du bien', de:'Adresse des Mietobjekts' },
+  'lbl-property-type':  { en:'Property type', nl:'Type pand', es:'Tipo de propiedad', fr:'Type de bien', de:'Art des Mietobjekts' },
+  'opt-house':       { en:'House', nl:'Woning', es:'Casa', fr:'Maison', de:'Haus' },
+  'opt-apartment':   { en:'Apartment', nl:'Appartement', es:'Apartamento', fr:'Appartement', de:'Wohnung' },
+  'opt-room':        { en:'Room', nl:'Kamer', es:'Habitación', fr:'Chambre', de:'Zimmer' },
+  'opt-commercial':  { en:'Commercial space', nl:'Bedrijfsruimte', es:'Local comercial', fr:'Local commercial', de:'Gewerberaum' },
+  'opt-other':       { en:'Other', nl:'Anders', es:'Otro', fr:'Autre', de:'Sonstiges' },
+  'lbl-furnished':   { en:'Furnished?', nl:'Gemeubileerd?', es:'¿Amueblado?', fr:'Meublé ?', de:'Möbliert?' },
+  'opt-yes':         { en:'Yes', nl:'Ja', es:'Sí', fr:'Oui', de:'Ja' },
+  'opt-no':          { en:'No', nl:'Nee', es:'No', fr:'Non', de:'Nein' },
+  'rs4-title':       { en:'Rent & payment', nl:'Huur & betaling', es:'Alquiler y pago', fr:'Loyer et paiement', de:'Miete & Zahlung' },
+  'rs4-explain':     { en:'Set the monthly rent, deposit, and payment terms.', nl:'Stel de maandelijkse huur, borg en betalingsvoorwaarden in.', es:'Establece el alquiler mensual, depósito y condiciones de pago.', fr:'Définissez le loyer mensuel, le dépôt et les conditions de paiement.', de:'Legen Sie die monatliche Miete, Kaution und Zahlungsbedingungen fest.' },
+  'lbl-rent':        { en:'Monthly rent', nl:'Maandelijkse huur', es:'Alquiler mensual', fr:'Loyer mensuel', de:'Monatliche Miete' },
+  'lbl-currency':    { en:'Currency', nl:'Valuta', es:'Moneda', fr:'Devise', de:'Währung' },
+  'lbl-deposit':     { en:'Security deposit', nl:'Borg', es:'Depósito de seguridad', fr:'Dépôt de garantie', de:'Kaution' },
+  'lbl-payment-day': { en:'Payment due by day of month', nl:'Betaling uiterlijk op dag van de maand', es:'Pago antes del día del mes', fr:'Paiement au plus tard le jour du mois', de:'Zahlung fällig am Tag des Monats' },
+
+  // Rental doc text
+  'rdoc-title':      { en:'RENTAL AGREEMENT', nl:'HUUROVEREENKOMST', es:'CONTRATO DE ALQUILER', fr:'CONTRAT DE LOCATION', de:'MIETVERTRAG' },
+  'rdoc-between':    { en:'This Rental Agreement is entered into between:', nl:'Deze huurovereenkomst is aangegaan tussen:', es:'Este contrato de alquiler se celebra entre:', fr:'Le présent contrat de location est conclu entre :', de:'Dieser Mietvertrag wird geschlossen zwischen:' },
+  'rdoc-landlord':   { en:'Landlord', nl:'Verhuurder', es:'Propietario', fr:'Bailleur', de:'Vermieter' },
+  'rdoc-tenant':     { en:'Tenant', nl:'Huurder', es:'Inquilino', fr:'Locataire', de:'Mieter' },
+  'rdoc-property-h': { en:'PROPERTY', nl:'HET GEHUURDE', es:'PROPIEDAD', fr:'BIEN LOUÉ', de:'MIETOBJEKT' },
+  'rdoc-property-text': { en:'The Landlord hereby rents to the Tenant the following property:', nl:'De verhuurder verhuurt hierbij aan de huurder het volgende pand:', es:'El propietario alquila al inquilino la siguiente propiedad:', fr:'Le bailleur loue au locataire le bien suivant :', de:'Der Vermieter vermietet dem Mieter folgendes Objekt:' },
+  'rdoc-type':       { en:'Type', nl:'Type', es:'Tipo', fr:'Type', de:'Art' },
+  'rdoc-furnished':  { en:'Furnished', nl:'Gemeubileerd', es:'Amueblado', fr:'Meublé', de:'Möbliert' },
+  'rdoc-rent-h':     { en:'RENT & PAYMENT', nl:'HUUR & BETALING', es:'ALQUILER Y PAGO', fr:'LOYER ET PAIEMENT', de:'MIETE UND ZAHLUNG' },
+  'rdoc-rent-text':  { en:'The monthly rent is {currency} {amount}, payable on or before the {day}th of each month.', nl:'De maandelijkse huur bedraagt {currency} {amount}, te betalen op of voor de {day}e van elke maand.', es:'El alquiler mensual es de {currency} {amount}, pagadero el día {day} de cada mes o antes.', fr:'Le loyer mensuel est de {currency} {amount}, payable au plus tard le {day} de chaque mois.', de:'Die monatliche Miete beträgt {currency} {amount}, zahlbar bis zum {day}. eines jeden Monats.' },
+  'rdoc-deposit-text':{ en:'A security deposit of {currency} {amount} is payable upon signing this agreement.', nl:'Een borg van {currency} {amount} is verschuldigd bij ondertekening van deze overeenkomst.', es:'Un depósito de seguridad de {currency} {amount} es pagadero al firmar este contrato.', fr:'Un dépôt de garantie de {currency} {amount} est dû à la signature du présent contrat.', de:'Eine Kaution in Höhe von {currency} {amount} ist bei Unterzeichnung dieses Vertrags zu zahlen.' },
+
+  'rental-disclaimer': { en:'⚠ This document is generated as a starting point. Rental laws vary by country and region. We strongly recommend having this agreement reviewed by a local legal professional before signing.', nl:'⚠ Dit document is een startpunt. Huurrecht verschilt per land en regio. Laat deze overeenkomst controleren door een lokale juridisch professional voordat je tekent.', es:'⚠ Este documento es un punto de partida. Las leyes de alquiler varían según el país y la región. Recomendamos encarecidamente que un profesional legal local revise este contrato antes de firmarlo.', fr:'⚠ Ce document est un point de départ. Le droit locatif varie selon les pays et les régions. Nous vous recommandons vivement de faire examiner ce contrat par un professionnel juridique local avant de le signer.', de:'⚠ Dieses Dokument ist ein Ausgangspunkt. Das Mietrecht variiert je nach Land und Region. Wir empfehlen dringend, diesen Vertrag vor der Unterzeichnung von einem lokalen Rechtsexperten prüfen zu lassen.' },
+  'jur-title':       { en:'⚖️ Legal note for your country', nl:'⚖️ Juridische opmerking voor jouw land', es:'⚖️ Nota legal para tu país', fr:'⚖️ Note juridique pour votre pays', de:'⚖️ Rechtlicher Hinweis für Ihr Land' },
+
+  'intro-p1-title':  { en:'Fill in a few details', nl:'Vul een paar gegevens in', es:'Completa algunos datos', fr:'Remplissez quelques informations', de:'Ein paar Angaben ausfüllen' },
+  'intro-p1-text':   { en:'We ask only what\'s needed — nothing more.', nl:'We vragen alleen wat nodig is — meer niet.', es:'Solo pedimos lo necesario — nada más.', fr:'Nous ne demandons que le nécessaire — rien de plus.', de:'Wir fragen nur, was nötig ist — nicht mehr.' },
+  'intro-p2-title':  { en:'Check the result', nl:'Controleer het resultaat', es:'Revisa el resultado', fr:'Vérifiez le résultat', de:'Ergebnis prüfen' },
+  'intro-p2-text':   { en:'See exactly what the document looks like before downloading.', nl:'Je ziet precies hoe het document eruitziet voordat je het downloadt.', es:'Ve exactamente cómo queda el documento antes de descargarlo.', fr:'Voyez exactement à quoi ressemble le document avant de le télécharger.', de:'Sehen Sie genau, wie das Dokument aussieht, bevor Sie es herunterladen.' },
+  'intro-p3-title':  { en:'Download and sign', nl:'Download en onderteken', es:'Descarga y firma', fr:'Téléchargez et signez', de:'Herunterladen und unterschreiben' },
+  'intro-p3-text':   { en:'Get a PDF ready to print and sign.', nl:'Je krijgt een PDF die je kunt printen en ondertekenen.', es:'Obtén un PDF listo para imprimir y firmar.', fr:'Obtenez un PDF prêt à imprimer et à signer.', de:'Sie erhalten ein PDF, das Sie ausdrucken und unterschreiben können.' },
+  'btn-start':       { en:'Let\'s get started', nl:'Laten we beginnen', es:'Empecemos', fr:'Commençons', de:'Loslegen' },
+  'btn-back':        { en:'Back', nl:'Terug', es:'Atrás', fr:'Retour', de:'Zurück' },
+  'btn-next':        { en:'Next', nl:'Volgende', es:'Siguiente', fr:'Suivant', de:'Weiter' },
+  'btn-preview':     { en:'Check the document', nl:'Controleer het document', es:'Revisar el documento', fr:'Vérifier le document', de:'Dokument prüfen' },
+  'btn-download':    { en:'⬇ Download PDF', nl:'⬇ Download PDF', es:'⬇ Descargar PDF', fr:'⬇ Télécharger PDF', de:'⬇ PDF herunterladen' },
+  'btn-edit':        { en:'Edit', nl:'Aanpassen', es:'Editar', fr:'Modifier', de:'Bearbeiten' },
+
+  's1-title':   { en:'Who is giving the power of attorney?', nl:'Wie geeft de volmacht?', es:'¿Quién otorga el poder?', fr:'Qui donne la procuration ?', de:'Wer erteilt die Vollmacht?' },
+  's1-explain': { en:'This is the person who wants someone else to act on their behalf.', nl:'Dit is de persoon die wil dat iemand anders namens hem of haar handelt.', es:'Esta es la persona que quiere que alguien actúe en su nombre.', fr:'C\'est la personne qui souhaite que quelqu\'un agisse en son nom.', de:'Das ist die Person, die möchte, dass jemand anderes in ihrem Namen handelt.' },
+  's2-title':   { en:'Who is receiving the power of attorney?', nl:'Wie krijgt de volmacht?', es:'¿Quién recibe el poder?', fr:'Qui reçoit la procuration ?', de:'Wer erhält die Vollmacht?' },
+  's2-explain': { en:'This is the person who will act on behalf of the person above — for example, a family member, friend, or lawyer.', nl:'Dit is de persoon die namens de ander mag handelen — bijvoorbeeld een familielid, vriend, of advocaat.', es:'Esta es la persona que actuará en nombre de la persona anterior — por ejemplo, un familiar, amigo o abogado.', fr:'C\'est la personne qui agira au nom de la personne ci-dessus — par exemple, un membre de la famille, un ami ou un avocat.', de:'Das ist die Person, die im Namen der oben genannten Person handelt — zum Beispiel ein Familienmitglied, Freund oder Anwalt.' },
+  's3-title':   { en:'What is this power of attorney for?', nl:'Waarvoor is de volmacht?', es:'¿Para qué es este poder?', fr:'À quoi sert cette procuration ?', de:'Wofür ist die Vollmacht?' },
+  's3-explain': { en:'Choose one option. A general power of attorney covers everything. A specific one only covers what you select.', nl:'Kies een optie. Een algemene volmacht dekt alles. Een specifieke volmacht dekt alleen wat je aanvinkt.', es:'Elige una opción. Un poder general cubre todo. Uno específico solo cubre lo que selecciones.', fr:'Choisissez une option. Une procuration générale couvre tout. Une procuration spécifique ne couvre que ce que vous sélectionnez.', de:'Wählen Sie eine Option. Eine Generalvollmacht deckt alles ab. Eine Spezialvollmacht nur das, was Sie auswählen.' },
+  's4-title':   { en:'How long should it last?', nl:'Hoe lang moet het gelden?', es:'¿Cuánto tiempo debe durar?', fr:'Quelle durée ?', de:'Wie lange soll sie gelten?' },
+  's4-explain': { en:'Choose how long this power of attorney stays valid.', nl:'Kies hoe lang de volmacht geldig blijft.', es:'Elige cuánto tiempo será válido este poder.', fr:'Choisissez la durée de validité de cette procuration.', de:'Wählen Sie, wie lange die Vollmacht gültig bleibt.' },
+  's5-title':   { en:'Your document', nl:'Je document', es:'Tu documento', fr:'Votre document', de:'Ihr Dokument' },
+  's5-explain': { en:'Check everything below. If something is wrong, click Edit. If it looks good, download the PDF.', nl:'Controleer alles hieronder. Klopt er iets niet? Klik op Aanpassen. Ziet het er goed uit? Download de PDF.', es:'Revisa todo a continuación. Si algo está mal, haz clic en Editar. Si todo está bien, descarga el PDF.', fr:'Vérifiez tout ci-dessous. Si quelque chose ne va pas, cliquez sur Modifier. Si tout est correct, téléchargez le PDF.', de:'Prüfen Sie alles unten. Stimmt etwas nicht, klicken Sie auf Bearbeiten. Sieht alles gut aus, laden Sie das PDF herunter.' },
+
+  'lbl-name':    { en:'Full name', nl:'Volledige naam', es:'Nombre completo', fr:'Nom complet', de:'Vollständiger Name' },
+  'hint-name':   { en:'As it appears on your ID or passport', nl:'Zoals het op je ID of paspoort staat', es:'Tal como aparece en tu documento de identidad o pasaporte', fr:'Tel qu\'il apparaît sur votre pièce d\'identité ou passeport', de:'Wie auf Ihrem Ausweis oder Reisepass angegeben' },
+  'ph-name':     { en:'First and last name', nl:'Voor- en achternaam', es:'Nombre y apellido', fr:'Prénom et nom', de:'Vor- und Nachname' },
+  'lbl-id':      { en:'ID or passport number', nl:'ID- of paspoortnummer', es:'Número de identificación o pasaporte', fr:'Numéro d\'identité ou de passeport', de:'Ausweis- oder Reisepassnummer' },
+  'ph-id':       { en:'Document number', nl:'Documentnummer', es:'Número de documento', fr:'Numéro de document', de:'Dokumentennummer' },
+  'tip-id':      { en:'You can find this on the front of your ID card or passport', nl:'Dit staat op de voorkant van je ID-kaart of paspoort', es:'Lo encontrarás en la parte frontal de tu documento de identidad o pasaporte', fr:'Vous le trouverez au recto de votre carte d\'identité ou passeport', de:'Sie finden diese Nummer auf der Vorderseite Ihres Ausweises oder Reisepasses' },
+  'lbl-address': { en:'Address', nl:'Adres', es:'Dirección', fr:'Adresse', de:'Adresse' },
+  'hint-address':{ en:'Street, number, and city', nl:'Straat, huisnummer en stad', es:'Calle, número y ciudad', fr:'Rue, numéro et ville', de:'Straße, Hausnummer und Stadt' },
+  'ph-address':  { en:'E.g. 123 Main Street, City', nl:'Bijv. Hoofdstraat 1, Stad', es:'Ej. Calle Principal 123, Ciudad', fr:'Ex. 1 Rue Principale, Ville', de:'Z.B. Hauptstraße 1, Stadt' },
+  'lbl-country': { en:'Country', nl:'Land', es:'País', fr:'Pays', de:'Land' },
+  'err-required':{ en:'This field is required', nl:'Dit veld is verplicht', es:'Este campo es obligatorio', fr:'Ce champ est obligatoire', de:'Dieses Feld ist erforderlich' },
+
+  'opt-general-title':  { en:'Everything', nl:'Alles', es:'Todo', fr:'Tout', de:'Alles' },
+  'opt-general-desc':   { en:'The other person can do anything on your behalf — bank, government, legal, and more.', nl:'De ander mag alles namens jou doen — bank, overheid, juridisch, en meer.', es:'La otra persona puede hacer todo en tu nombre — banco, gobierno, legal y más.', fr:'L\'autre personne peut tout faire en votre nom — banque, administration, juridique et plus.', de:'Die andere Person kann alles in Ihrem Namen tun — Bank, Behörden, Recht und mehr.' },
+  'opt-specific-title': { en:'Only specific things', nl:'Alleen bepaalde dingen', es:'Solo cosas específicas', fr:'Uniquement certaines choses', de:'Nur bestimmte Dinge' },
+  'opt-specific-desc':  { en:'You choose exactly what the other person is allowed to do.', nl:'Je kiest precies wat de ander wel en niet mag doen.', es:'Tú eliges exactamente qué puede hacer la otra persona.', fr:'Vous choisissez exactement ce que l\'autre personne est autorisée à faire.', de:'Sie wählen genau aus, was die andere Person tun darf.' },
+  'lbl-pick-scope':     { en:'Pick what applies:', nl:'Kies wat van toepassing is:', es:'Selecciona lo que aplique:', fr:'Sélectionnez ce qui s\'applique :', de:'Wählen Sie, was zutrifft:' },
+  'lbl-extra':          { en:'Anything else?', nl:'Nog iets anders?', es:'¿Algo más?', fr:'Autre chose ?', de:'Noch etwas?' },
+  'ph-extra':           { en:'Describe in your own words what else the other person may do', nl:'Beschrijf hier in je eigen woorden wat de ander nog meer mag doen', es:'Describe con tus propias palabras qué más puede hacer la otra persona', fr:'Décrivez dans vos propres mots ce que l\'autre personne peut faire de plus', de:'Beschreiben Sie in eigenen Worten, was die andere Person sonst noch tun darf' },
+
+  'opt-indef-title':  { en:'Until cancelled', nl:'Tot ik het intrek', es:'Hasta que se revoque', fr:'Jusqu\'à révocation', de:'Bis zum Widerruf' },
+  'opt-indef-desc':   { en:'It stays valid until you cancel it in writing.', nl:'De volmacht blijft geldig tot je het schriftelijk intrekt.', es:'Sigue vigente hasta que lo canceles por escrito.', fr:'Elle reste valable jusqu\'à ce que vous la révoquiez par écrit.', de:'Sie bleibt gültig, bis Sie sie schriftlich widerrufen.' },
+  'opt-fixed-title':  { en:'Set a time period', nl:'Vaste periode', es:'Período fijo', fr:'Période définie', de:'Fester Zeitraum' },
+  'opt-fixed-desc':   { en:'You choose a start and end date.', nl:'Je kiest een begin- en einddatum.', es:'Tú eliges una fecha de inicio y fin.', fr:'Vous choisissez une date de début et de fin.', de:'Sie wählen ein Start- und Enddatum.' },
+  'lbl-from':         { en:'From', nl:'Van', es:'Desde', fr:'Du', de:'Von' },
+  'lbl-until':        { en:'Until', nl:'Tot', es:'Hasta', fr:'Au', de:'Bis' },
+  'lbl-place':        { en:'Where is this being signed?', nl:'Waar wordt dit ondertekend?', es:'¿Dónde se firma?', fr:'Où est-ce signé ?', de:'Wo wird unterschrieben?' },
+  'lbl-date':         { en:'Date of the document', nl:'Datum van het document', es:'Fecha del documento', fr:'Date du document', de:'Datum des Dokuments' },
+  'lbl-law':          { en:'Which country\'s laws apply?', nl:'Welk land geldt als recht?', es:'¿Qué legislación aplica?', fr:'Quelle législation s\'applique ?', de:'Welches Landesrecht gilt?' },
+  'tip-law':          { en:'Usually the country where the power of attorney will be used', nl:'Meestal het land waar de volmacht wordt gebruikt', es:'Generalmente el país donde se usará el poder', fr:'Généralement le pays où la procuration sera utilisée', de:'Normalerweise das Land, in dem die Vollmacht verwendet wird' },
+
+  // Scope items (UI)
+  'scope-banking':     { en:'Banking', nl:'Bankzaken', es:'Banca', fr:'Banque', de:'Bankgeschäfte' },
+  'scope-banking-d':   { en:'Transfer money, manage accounts', nl:'Geld overmaken, rekening beheren', es:'Transferir dinero, gestionar cuentas', fr:'Transférer de l\'argent, gérer des comptes', de:'Geld überweisen, Konten verwalten' },
+  'scope-realestate':  { en:'House & property', nl:'Huis & vastgoed', es:'Casa y propiedades', fr:'Immobilier', de:'Haus & Immobilien' },
+  'scope-realestate-d':{ en:'Buy, sell, rent', nl:'Kopen, verkopen, huren', es:'Comprar, vender, alquilar', fr:'Acheter, vendre, louer', de:'Kaufen, verkaufen, mieten' },
+  'scope-tax':         { en:'Taxes', nl:'Belasting', es:'Impuestos', fr:'Impôts', de:'Steuern' },
+  'scope-tax-d':       { en:'File returns, make objections', nl:'Aangifte doen, bezwaar maken', es:'Presentar declaraciones, hacer objeciones', fr:'Déposer des déclarations, faire des réclamations', de:'Steuererklärungen einreichen, Einspruch erheben' },
+  'scope-legal':       { en:'Legal', nl:'Juridisch', es:'Legal', fr:'Juridique', de:'Rechtliches' },
+  'scope-legal-d':     { en:'Lawsuits, hire a lawyer', nl:'Rechtszaken, advocaat inschakelen', es:'Demandas, contratar abogado', fr:'Procès, engager un avocat', de:'Klagen, Anwalt beauftragen' },
+  'scope-business':    { en:'Business', nl:'Bedrijf', es:'Negocios', fr:'Entreprise', de:'Geschäftliches' },
+  'scope-business-d':  { en:'Sign contracts, manage affairs', nl:'Contracten tekenen, zaken beheren', es:'Firmar contratos, gestionar asuntos', fr:'Signer des contrats, gérer des affaires', de:'Verträge unterschreiben, Geschäfte führen' },
+  'scope-government':  { en:'Government', nl:'Overheid', es:'Gobierno', fr:'Administration', de:'Behörden' },
+  'scope-government-d':{ en:'Permits, applications', nl:'Vergunningen, documenten aanvragen', es:'Permisos, solicitudes', fr:'Permis, demandes', de:'Genehmigungen, Anträge' },
+  'scope-insurance':   { en:'Insurance', nl:'Verzekeringen', es:'Seguros', fr:'Assurance', de:'Versicherungen' },
+  'scope-insurance-d': { en:'Claims, policy changes', nl:'Claims, polissen wijzigen', es:'Reclamaciones, cambios de póliza', fr:'Réclamations, modifications de police', de:'Ansprüche, Vertragsänderungen' },
+  'scope-vehicle':     { en:'Vehicle', nl:'Voertuig', es:'Vehículo', fr:'Véhicule', de:'Fahrzeug' },
+  'scope-vehicle-d':   { en:'Buy, sell, transfer a car', nl:'Auto kopen, verkopen, overschrijven', es:'Comprar, vender, transferir un auto', fr:'Acheter, vendre, transférer un véhicule', de:'Auto kaufen, verkaufen, ummelden' },
+
+  // Document text
+  'doc-title':      { en:'POWER OF ATTORNEY', nl:'VOLMACHT', es:'PODER NOTARIAL', fr:'PROCURATION', de:'VOLLMACHT' },
+  'doc-preamble':   { en:'The undersigned:', nl:'Ondergetekende:', es:'El/la abajo firmante:', fr:'Le/la soussigné(e) :', de:'Der/die Unterzeichnende:' },
+  'doc-name':       { en:'Name', nl:'Naam', es:'Nombre', fr:'Nom', de:'Name' },
+  'doc-id':         { en:'ID/Passport number', nl:'ID/Paspoortnummer', es:'Número de identificación/pasaporte', fr:'Numéro d\'identité/passeport', de:'Ausweis-/Reisepassnummer' },
+  'doc-address':    { en:'Address', nl:'Adres', es:'Dirección', fr:'Adresse', de:'Adresse' },
+  'doc-country':    { en:'Country', nl:'Land', es:'País', fr:'Pays', de:'Land' },
+  'doc-grants':     { en:'hereby grants power of attorney to:', nl:'verleent hierbij volmacht aan:', es:'por la presente otorga poder notarial a:', fr:'donne par la présente procuration à :', de:'erteilt hiermit Vollmacht an:' },
+  'doc-scope-h':    { en:'SCOPE OF AUTHORITY', nl:'REIKWIJDTE', es:'ALCANCE DE LA AUTORIZACIÓN', fr:'ÉTENDUE DES POUVOIRS', de:'UMFANG DER VOLLMACHT' },
+  'doc-general-scope': {
+    en:'The Attorney-in-Fact is authorized to act on behalf of the Grantor in all legal and financial matters, including but not limited to managing financial affairs, signing documents, conducting legal proceedings, and performing all other acts that the Grantor could perform personally.',
+    nl:'De gevolmachtigde is bevoegd om namens de volmachtgever alle rechtshandelingen te verrichten, waaronder maar niet beperkt tot het beheren van financiële zaken, het ondertekenen van documenten, het voeren van juridische procedures, en het verrichten van alle overige handelingen die de volmachtgever zelf zou kunnen verrichten.',
+    es:'El apoderado está autorizado para actuar en nombre del otorgante en todos los asuntos legales y financieros, incluyendo pero no limitado a la gestión de asuntos financieros, la firma de documentos, la conducción de procedimientos legales y la realización de todos los demás actos que el otorgante podría realizar personalmente.',
+    fr:'Le mandataire est autorisé à agir au nom du mandant dans toutes les affaires juridiques et financières, y compris mais sans s\'y limiter la gestion des affaires financières, la signature de documents, la conduite de procédures judiciaires et l\'accomplissement de tous les autres actes que le mandant pourrait accomplir personnellement.',
+    de:'Der Bevollmächtigte ist berechtigt, im Namen des Vollmachtgebers in allen rechtlichen und finanziellen Angelegenheiten zu handeln, einschließlich, aber nicht beschränkt auf die Verwaltung finanzieller Angelegenheiten, die Unterzeichnung von Dokumenten, die Führung von Gerichtsverfahren und die Durchführung aller sonstigen Handlungen, die der Vollmachtgeber persönlich vornehmen könnte.'
+  },
+  'doc-specific-scope': { en:'The Attorney-in-Fact is authorized to perform the following acts on behalf of the Grantor:', nl:'De gevolmachtigde is bevoegd om namens de volmachtgever de volgende handelingen te verrichten:', es:'El apoderado está autorizado para realizar los siguientes actos en nombre del otorgante:', fr:'Le mandataire est autorisé à accomplir les actes suivants au nom du mandant :', de:'Der Bevollmächtigte ist berechtigt, folgende Handlungen im Namen des Vollmachtgebers vorzunehmen:' },
+  'doc-additional':    { en:'Additionally', nl:'Aanvullend', es:'Adicionalmente', fr:'En outre', de:'Zusätzlich' },
+  'doc-duration-h':    { en:'DURATION', nl:'DUUR', es:'DURACIÓN', fr:'DURÉE', de:'DAUER' },
+  'doc-indef-text':    { en:'This Power of Attorney is valid indefinitely and shall remain in effect until revoked in writing by the Grantor.', nl:'Deze volmacht is geldig voor onbepaalde tijd en blijft van kracht totdat deze schriftelijk wordt ingetrokken door de volmachtgever.', es:'Este poder notarial es válido por tiempo indefinido y permanecerá vigente hasta que sea revocado por escrito por el otorgante.', fr:'Cette procuration est valable pour une durée indéterminée et reste en vigueur jusqu\'à sa révocation écrite par le mandant.', de:'Diese Vollmacht gilt auf unbestimmte Zeit und bleibt in Kraft, bis sie vom Vollmachtgeber schriftlich widerrufen wird.' },
+  'doc-fixed-text':    { en:'This Power of Attorney is valid from {start} through {end}.', nl:'Deze volmacht is geldig van {start} tot en met {end}.', es:'Este poder notarial es válido desde {start} hasta {end}.', fr:'Cette procuration est valable du {start} au {end}.', de:'Diese Vollmacht ist gültig von {start} bis {end}.' },
+  'doc-law-h':         { en:'GOVERNING LAW', nl:'TOEPASSELIJK RECHT', es:'LEGISLACIÓN APLICABLE', fr:'DROIT APPLICABLE', de:'ANWENDBARES RECHT' },
+  'doc-law-text':      { en:'This Power of Attorney shall be governed by the laws of {law}.', nl:'Op deze volmacht is het recht van {law} van toepassing.', es:'Este poder notarial se regirá por las leyes de {law}.', fr:'Cette procuration est régie par le droit de {law}.', de:'Diese Vollmacht unterliegt dem Recht von {law}.' },
+  'doc-exec-h':        { en:'EXECUTION', nl:'ONDERTEKENING', es:'FIRMA', fr:'SIGNATURE', de:'UNTERSCHRIFT' },
+  'doc-exec-text':     { en:'Executed at {place} on {date}.', nl:'Aldus opgemaakt en ondertekend te {place} op {date}.', es:'Firmado en {place} el {date}.', fr:'Fait et signé à {place} le {date}.', de:'Ausgefertigt und unterzeichnet in {place} am {date}.' },
+  'doc-grantor-sig':   { en:'Grantor', nl:'Volmachtgever', es:'Otorgante', fr:'Mandant', de:'Vollmachtgeber' },
+  'doc-grantee-sig':   { en:'Attorney-in-Fact', nl:'Gevolmachtigde', es:'Apoderado', fr:'Mandataire', de:'Bevollmächtigter' },
+  'doc-witness':       { en:'Witness', nl:'Getuige', es:'Testigo', fr:'Témoin', de:'Zeuge' },
+
+  // Scope labels (document)
+  'dscope-banking':    { en:'Banking and financial transactions', nl:'Bank- en financiële transacties', es:'Transacciones bancarias y financieras', fr:'Transactions bancaires et financières', de:'Bank- und Finanztransaktionen' },
+  'dscope-realestate': { en:'Real estate transactions', nl:'Onroerend goed transacties', es:'Transacciones inmobiliarias', fr:'Transactions immobilières', de:'Immobilientransaktionen' },
+  'dscope-tax':        { en:'Tax filings and matters', nl:'Belastingaangiften en -zaken', es:'Declaraciones y asuntos fiscales', fr:'Déclarations et affaires fiscales', de:'Steuererklärungen und -angelegenheiten' },
+  'dscope-legal':      { en:'Legal proceedings', nl:'Gerechtelijke procedures', es:'Procedimientos legales', fr:'Procédures judiciaires', de:'Gerichtsverfahren' },
+  'dscope-business':   { en:'Business operations', nl:'Bedrijfsvoering', es:'Operaciones comerciales', fr:'Opérations commerciales', de:'Geschäftsbetrieb' },
+  'dscope-government': { en:'Government filings and applications', nl:'Overheidsdocumenten en -aanvragen', es:'Trámites y solicitudes gubernamentales', fr:'Démarches et demandes administratives', de:'Behördliche Anträge und Einreichungen' },
+  'dscope-insurance':  { en:'Insurance matters', nl:'Verzekeringszaken', es:'Asuntos de seguros', fr:'Affaires d\'assurance', de:'Versicherungsangelegenheiten' },
+  'dscope-vehicle':    { en:'Vehicle registration and transfer', nl:'Voertuigregistratie en -overdracht', es:'Registro y transferencia de vehículos', fr:'Immatriculation et transfert de véhicule', de:'Fahrzeugzulassung und -übertragung' },
+};
+
+const SCOPES = [
+  { id:'banking',    icon:'🏦' },
+  { id:'realestate', icon:'🏠' },
+  { id:'tax',        icon:'🧾' },
+  { id:'legal',      icon:'⚖️' },
+  { id:'business',   icon:'💼' },
+  { id:'government', icon:'🏛️' },
+  { id:'insurance',  icon:'🛡️' },
+  { id:'vehicle',    icon:'🚗' },
+];
+
+let lang = 'en';
+let currentStep = 0;
+let poaType = 'general';
+let durationType = 'indefinite';
+let selectedScopes = new Set();
+const totalSteps = 5;
+
+function t(key) { return T[key]?.[lang] || T[key]?.en || key; }
+
+function setLang(l) {
+  lang = l;
+  try { localStorage.setItem('dg_lang', l); } catch(e) {}
+  ['en','nl','es','fr','de'].forEach(c => {
+    const btn = document.getElementById('btn-'+c);
+    if (btn) btn.classList.toggle('active', c === l);
+  });
+  applyLang();
+}
+
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (T[k]) el.textContent = T[k][lang] || T[k].en;
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const k = el.getAttribute('data-i18n-placeholder');
+    if (T[k]) el.placeholder = T[k][lang] || T[k].en;
+  });
+  // Tooltips
+  document.querySelectorAll('.tip').forEach(tip => {
+    const parent = tip.closest('.field');
+    if (!parent) return;
+    const lbl = parent.querySelector('label')?.getAttribute('data-i18n');
+    if (lbl === 'lbl-id') tip.setAttribute('data-tip', t('tip-id'));
+    if (lbl === 'lbl-law') tip.setAttribute('data-tip', t('tip-law'));
+  });
+  buildScopeGrid();
+  if (currentStep === 5) renderPreview();
+}
+
+function buildScopeGrid() {
+  const grid = document.getElementById('scope-grid');
+  grid.innerHTML = '';
+  SCOPES.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'choice-card' + (selectedScopes.has(s.id) ? ' selected' : '');
+    card.onclick = () => toggleScope(s.id);
+    card.innerHTML = `<div class="choice-icon">${s.icon}</div><div><div class="choice-text">${t('scope-'+s.id)}</div><div class="choice-sub">${t('scope-'+s.id+'-d')}</div></div>`;
+    grid.appendChild(card);
+  });
+}
+
+function toggleScope(id) {
+  if (selectedScopes.has(id)) selectedScopes.delete(id);
+  else selectedScopes.add(id);
+  buildScopeGrid();
+}
+
+function setPoaType(type) {
+  poaType = type;
+  document.getElementById('tc-general').classList.toggle('selected', type === 'general');
+  document.getElementById('tc-specific').classList.toggle('selected', type === 'specific');
+  document.getElementById('scope-choices').style.display = type === 'specific' ? 'block' : 'none';
+}
+
+function setDuration(type) {
+  durationType = type;
+  document.getElementById('dc-indef').classList.toggle('selected', type === 'indefinite');
+  document.getElementById('dc-fixed').classList.toggle('selected', type === 'fixed');
+  document.getElementById('date-fields').classList.toggle('show', type === 'fixed');
+}
+
+function goStep(n) {
+  currentStep = n;
+  document.querySelectorAll('.step').forEach((el, i) => el.classList.toggle('active', i === n));
+  document.getElementById('progress').style.width = (n / totalSteps * 100) + '%';
+  if (n === 5) renderPreview();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function validateAndGo(from, to) {
+  const required = {
+    1: ['g1-name', 'g1-id', 'g1-address'],
+    2: ['g2-name', 'g2-id', 'g2-address'],
+  };
+  let ok = true;
+  (required[from] || []).forEach(id => {
+    const el = document.getElementById(id);
+    const err = document.getElementById('err-' + id);
+    if (!el.value.trim()) {
+      el.classList.add('field-error');
+      if (err) { err.style.display = 'block'; err.textContent = t('err-required'); }
+      ok = false;
+    } else {
+      el.classList.remove('field-error');
+      if (err) err.style.display = 'none';
+    }
+  });
+  if (ok) goStep(to);
+}
+
+// ====== Data gather ======
+function gatherData() {
+  return {
+    g1: {
+      name: document.getElementById('g1-name').value.trim(),
+      id: document.getElementById('g1-id').value.trim(),
+      address: document.getElementById('g1-address').value.trim(),
+      country: document.getElementById('g1-country').value.trim(),
+    },
+    g2: {
+      name: document.getElementById('g2-name').value.trim(),
+      id: document.getElementById('g2-id').value.trim(),
+      address: document.getElementById('g2-address').value.trim(),
+      country: document.getElementById('g2-country').value.trim(),
+    },
+    poaType,
+    scopes: [...selectedScopes],
+    extra: document.getElementById('scope-extra').value.trim(),
+    durationType,
+    dateStart: document.getElementById('date-start').value,
+    dateEnd: document.getElementById('date-end').value,
+    docDate: document.getElementById('doc-date').value,
+    docPlace: document.getElementById('doc-place').value.trim(),
+    govLaw: document.getElementById('gov-law').value.trim(),
+  };
+}
+
+function fmtDate(ds) {
+  if (!ds) return '_______________';
+  const d = new Date(ds + 'T00:00:00');
+  const months = {
+    en: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+    nl: ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'],
+    es: ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
+    fr: ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
+    de: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+  };
+  const m = months[lang] || months.en;
+  const day = d.getDate(), mon = m[d.getMonth()], yr = d.getFullYear();
+  if (lang === 'de') return `${day}. ${mon} ${yr}`;
+  if (lang === 'es') return `${day} de ${mon} de ${yr}`;
+  return `${day} ${mon} ${yr}`;
+}
+
+// ====== Preview ======
+function renderPreview() {
+  const d = gatherData();
+  const el = document.getElementById('preview');
+
+  const person = (p) => `<strong>${t('doc-name')}:</strong> ${p.name||'___'}<br><strong>${t('doc-id')}:</strong> ${p.id||'___'}<br><strong>${t('doc-address')}:</strong> ${p.address||'___'}<br><strong>${t('doc-country')}:</strong> ${p.country||'___'}`;
+
+  let scopeHtml = '';
+  if (d.poaType === 'general') {
+    scopeHtml = `<p>${t('doc-general-scope')}</p>`;
+  } else {
+    scopeHtml = `<p>${t('doc-specific-scope')}</p><ul>`;
+    d.scopes.forEach(s => { scopeHtml += `<li>${t('dscope-'+s)}</li>`; });
+    scopeHtml += '</ul>';
+    if (d.extra) scopeHtml += `<p><em>${t('doc-additional')}:</em> ${d.extra}</p>`;
+  }
+
+  let durHtml = d.durationType === 'indefinite'
+    ? `<p>${t('doc-indef-text')}</p>`
+    : `<p>${t('doc-fixed-text').replace('{start}', fmtDate(d.dateStart)).replace('{end}', fmtDate(d.dateEnd))}</p>`;
+
+  el.innerHTML = `
+    <h2>${t('doc-title')}</h2>
+    <div class="sec"><div class="sec-title">${t('doc-preamble')}</div>${person(d.g1)}</div>
+    <p style="margin:14px 0;font-style:italic;">${t('doc-grants')}</p>
+    <div class="sec">${person(d.g2)}</div>
+    <div class="sec"><div class="sec-title">${t('doc-scope-h')}</div>${scopeHtml}</div>
+    <div class="sec"><div class="sec-title">${t('doc-duration-h')}</div>${durHtml}</div>
+    <div class="sec"><div class="sec-title">${t('doc-law-h')}</div><p>${t('doc-law-text').replace('{law}', d.govLaw||'___')}</p></div>
+    <div class="sec"><div class="sec-title">${t('doc-exec-h')}</div><p>${t('doc-exec-text').replace('{place}', d.docPlace||'___').replace('{date}', fmtDate(d.docDate))}</p></div>
+    <div class="sig-grid">
+      <div><div class="sig-line">${t('doc-grantor-sig')}<br>${d.g1.name||'___'}</div></div>
+      <div><div class="sig-line">${t('doc-grantee-sig')}<br>${d.g2.name||'___'}</div></div>
+    </div>
+    <div class="sig-grid" style="margin-top:16px;">
+      <div><div class="sig-line">${t('doc-witness')} 1</div></div>
+      <div><div class="sig-line">${t('doc-witness')} 2</div></div>
+    </div>
+  `;
+}
+
+// ====== PDF ======
+async function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const d = gatherData();
+  const mg = 25, pw = 160;
+  let y = mg;
+
+  const addTxt = (text, opts = {}) => {
+    const sz = opts.size || 10, st = opts.style || 'normal', al = opts.align || 'left';
+    doc.setFontSize(sz);
+    doc.setFont('helvetica', st);
+    const lines = doc.splitTextToSize(text, opts.w || pw);
+    if (y + lines.length * sz * 0.4 > 280) { doc.addPage(); y = mg; }
+    doc.text(lines, al === 'center' ? 105 : mg, y, { align: al });
+    y += lines.length * sz * 0.42 + (opts.gap || 2);
+  };
+
+  addTxt(t('doc-title'), { size: 18, style: 'bold', align: 'center', gap: 8 });
+  y += 3;
+
+  addTxt(t('doc-preamble'), { size: 10, style: 'bold' });
+  y += 2;
+  addTxt(`${t('doc-name')}: ${d.g1.name||'___'}`, {});
+  addTxt(`${t('doc-id')}: ${d.g1.id||'___'}`, {});
+  addTxt(`${t('doc-address')}: ${d.g1.address||'___'}`, {});
+  addTxt(`${t('doc-country')}: ${d.g1.country||'___'}`, {});
+  y += 3;
+  addTxt(t('doc-grants'), { style: 'italic', gap: 4 });
+  y += 2;
+  addTxt(`${t('doc-name')}: ${d.g2.name||'___'}`, {});
+  addTxt(`${t('doc-id')}: ${d.g2.id||'___'}`, {});
+  addTxt(`${t('doc-address')}: ${d.g2.address||'___'}`, {});
+  addTxt(`${t('doc-country')}: ${d.g2.country||'___'}`, {});
+  y += 4;
+
+  addTxt(t('doc-scope-h'), { size: 12, style: 'bold', gap: 4 });
+  if (d.poaType === 'general') {
+    addTxt(t('doc-general-scope'), {});
+  } else {
+    addTxt(t('doc-specific-scope'), {});
+    d.scopes.forEach(s => addTxt(`  •  ${t('dscope-'+s)}`, {}));
+    if (d.extra) addTxt(`${t('doc-additional')}: ${d.extra}`, {});
+  }
+  y += 3;
+
+  addTxt(t('doc-duration-h'), { size: 12, style: 'bold', gap: 4 });
+  if (d.durationType === 'indefinite') {
+    addTxt(t('doc-indef-text'), {});
+  } else {
+    addTxt(t('doc-fixed-text').replace('{start}', fmtDate(d.dateStart)).replace('{end}', fmtDate(d.dateEnd)), {});
+  }
+  y += 3;
+
+  addTxt(t('doc-law-h'), { size: 12, style: 'bold', gap: 4 });
+  addTxt(t('doc-law-text').replace('{law}', d.govLaw||'___'), {});
+  y += 3;
+
+  addTxt(t('doc-exec-h'), { size: 12, style: 'bold', gap: 4 });
+  addTxt(t('doc-exec-text').replace('{place}', d.docPlace||'___').replace('{date}', fmtDate(d.docDate)), {});
+
+  y += 20;
+  if (y > 250) { doc.addPage(); y = mg + 20; }
+  doc.setDrawColor(50);
+  doc.line(mg, y, mg+65, y);
+  doc.setFontSize(9);
+  doc.text(t('doc-grantor-sig'), mg, y+5);
+  doc.text(d.g1.name||'', mg, y+9);
+  doc.line(mg+95, y, mg+160, y);
+  doc.text(t('doc-grantee-sig'), mg+95, y+5);
+  doc.text(d.g2.name||'', mg+95, y+9);
+
+  y += 30;
+  if (y > 260) { doc.addPage(); y = mg + 20; }
+  doc.line(mg, y, mg+65, y);
+  doc.text(`${t('doc-witness')} 1`, mg, y+5);
+  doc.line(mg+95, y, mg+160, y);
+  doc.text(`${t('doc-witness')} 2`, mg+95, y+5);
+
+  doc.setFontSize(7);
+  doc.setTextColor(150);
+  doc.text('Generated by documentgenerator.ai', 105, 290, { align: 'center' });
+
+  const blob = doc.output('blob');
+  const fn = `Power_of_Attorney_${d.g1.name ? d.g1.name.replace(/\s+/g,'_') : 'draft'}.pdf`;
+
+  try {
+    const dl = await window.claude?.use?.('downloads');
+    if (dl) { await dl.save({ filename: fn, data: blob }); return; }
+  } catch(e) {}
+  const u = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = u; a.download = fn; a.click();
+  URL.revokeObjectURL(u);
+}
+
+// ====== Locale detection via timezone ======
+// addr uses lang key: addr.en, addr.nl, addr.es, addr.fr, addr.de
+const L = (country, city, addr, defLang='en') => ({country, city, addr, defLang});
+const LOCALE_MAP = {
+  // Caribbean
+  'America/Lower_Princes':  L('Sint Maarten','Philipsburg, Sint Maarten',{en:'E.g. Frontstreet 12, Philipsburg',nl:'Bijv. Frontstreet 12, Philipsburg',es:'Ej. Frontstreet 12, Philipsburg',fr:'Ex. Frontstreet 12, Philipsburg',de:'Z.B. Frontstreet 12, Philipsburg'},'en'),
+  'America/Curacao':        L('Curaçao','Willemstad, Curaçao',{en:'E.g. Breedestraat 10, Willemstad',nl:'Bijv. Breedestraat 10, Willemstad',es:'Ej. Breedestraat 10, Willemstad',fr:'Ex. Breedestraat 10, Willemstad',de:'Z.B. Breedestraat 10, Willemstad'},'nl'),
+  'America/Aruba':          L('Aruba','Oranjestad, Aruba',{en:'E.g. Caya G.F. Betico Croes 5, Oranjestad',nl:'Bijv. Caya G.F. Betico Croes 5, Oranjestad',es:'Ej. Caya G.F. Betico Croes 5, Oranjestad',fr:'Ex. Caya G.F. Betico Croes 5, Oranjestad',de:'Z.B. Caya G.F. Betico Croes 5, Oranjestad'},'nl'),
+  'America/Kralendijk':     L('Bonaire','Kralendijk, Bonaire',{en:'E.g. Kaya Grandi 15, Kralendijk',nl:'Bijv. Kaya Grandi 15, Kralendijk',es:'Ej. Kaya Grandi 15, Kralendijk',fr:'Ex. Kaya Grandi 15, Kralendijk',de:'Z.B. Kaya Grandi 15, Kralendijk'},'nl'),
+  'America/Puerto_Rico':    L('Puerto Rico','San Juan, Puerto Rico',{en:'E.g. 100 Calle Fortaleza, San Juan',nl:'Bijv. 100 Calle Fortaleza, San Juan',es:'Ej. 100 Calle Fortaleza, San Juan',fr:'Ex. 100 Calle Fortaleza, San Juan',de:'Z.B. 100 Calle Fortaleza, San Juan'},'es'),
+  'America/Santo_Domingo':  L('República Dominicana','Santo Domingo',{en:'E.g. Av. 27 de Febrero 100, Santo Domingo',nl:'Bijv. Av. 27 de Febrero 100, Santo Domingo',es:'Ej. Av. 27 de Febrero 100, Santo Domingo',fr:'Ex. Av. 27 de Febrero 100, Santo Domingo',de:'Z.B. Av. 27 de Febrero 100, Santo Domingo'},'es'),
+  'America/Jamaica':        L('Jamaica','Kingston, Jamaica',{en:'E.g. 12 King Street, Kingston',nl:'Bijv. 12 King Street, Kingston',es:'Ej. 12 King Street, Kingston',fr:'Ex. 12 King Street, Kingston',de:'Z.B. 12 King Street, Kingston'},'en'),
+  'America/Port_of_Spain':  L('Trinidad and Tobago','Port of Spain, Trinidad',{en:'E.g. 25 Frederick Street, Port of Spain',nl:'Bijv. 25 Frederick Street, Port of Spain',es:'Ej. 25 Frederick Street, Port of Spain',fr:'Ex. 25 Frederick Street, Port of Spain',de:'Z.B. 25 Frederick Street, Port of Spain'},'en'),
+  'America/Barbados':       L('Barbados','Bridgetown, Barbados',{en:'E.g. Broad Street 8, Bridgetown',nl:'Bijv. Broad Street 8, Bridgetown',es:'Ej. Broad Street 8, Bridgetown',fr:'Ex. Broad Street 8, Bridgetown',de:'Z.B. Broad Street 8, Bridgetown'},'en'),
+  'America/Guyana':         L('Guyana','Georgetown, Guyana',{en:'E.g. 45 Main Street, Georgetown',nl:'Bijv. 45 Main Street, Georgetown',es:'Ej. 45 Main Street, Georgetown',fr:'Ex. 45 Main Street, Georgetown',de:'Z.B. 45 Main Street, Georgetown'},'en'),
+  'America/Paramaribo':     L('Suriname','Paramaribo, Suriname',{en:'E.g. Domineestraat 20, Paramaribo',nl:'Bijv. Domineestraat 20, Paramaribo',es:'Ej. Domineestraat 20, Paramaribo',fr:'Ex. Domineestraat 20, Paramaribo',de:'Z.B. Domineestraat 20, Paramaribo'},'nl'),
+
+  // Europe
+  'Europe/Amsterdam':       L('Nederland','Amsterdam, Nederland',{en:'E.g. Keizersgracht 100, Amsterdam',nl:'Bijv. Keizersgracht 100, Amsterdam',es:'Ej. Keizersgracht 100, Ámsterdam',fr:'Ex. Keizersgracht 100, Amsterdam',de:'Z.B. Keizersgracht 100, Amsterdam'},'nl'),
+  'Europe/Brussels':        L('Belgium','Brussels, Belgium',{en:'E.g. Rue de la Loi 16, Brussels',nl:'Bijv. Wetstraat 16, Brussel',es:'Ej. Rue de la Loi 16, Bruselas',fr:'Ex. 16 Rue de la Loi, Bruxelles',de:'Z.B. Wetstraat 16, Brüssel'},'nl'),
+  'Europe/London':          L('United Kingdom','London, United Kingdom',{en:'E.g. 10 Baker Street, London',nl:'Bijv. 10 Baker Street, London',es:'Ej. 10 Baker Street, Londres',fr:'Ex. 10 Baker Street, Londres',de:'Z.B. 10 Baker Street, London'},'en'),
+  'Europe/Paris':           L('France','Paris, France',{en:'E.g. 15 Rue de Rivoli, Paris',nl:'Bijv. 15 Rue de Rivoli, Parijs',es:'Ej. 15 Rue de Rivoli, París',fr:'Ex. 15 Rue de Rivoli, Paris',de:'Z.B. 15 Rue de Rivoli, Paris'},'fr'),
+  'Europe/Berlin':          L('Deutschland','Berlin, Deutschland',{en:'E.g. Friedrichstraße 40, Berlin',nl:'Bijv. Friedrichstraße 40, Berlijn',es:'Ej. Friedrichstraße 40, Berlín',fr:'Ex. Friedrichstraße 40, Berlin',de:'Z.B. Friedrichstraße 40, Berlin'},'de'),
+  'Europe/Vienna':          L('Österreich','Wien, Österreich',{en:'E.g. Kärntner Straße 10, Vienna',nl:'Bijv. Kärntner Straße 10, Wenen',es:'Ej. Kärntner Straße 10, Viena',fr:'Ex. Kärntner Straße 10, Vienne',de:'Z.B. Kärntner Straße 10, Wien'},'de'),
+  'Europe/Madrid':          L('España','Madrid, España',{en:'E.g. Calle Gran Vía 28, Madrid',nl:'Bijv. Calle Gran Vía 28, Madrid',es:'Ej. Calle Gran Vía 28, Madrid',fr:'Ex. Calle Gran Vía 28, Madrid',de:'Z.B. Calle Gran Vía 28, Madrid'},'es'),
+  'Atlantic/Canary':        L('España','Las Palmas, España',{en:'E.g. Calle Triana 50, Las Palmas',nl:'Bijv. Calle Triana 50, Las Palmas',es:'Ej. Calle Triana 50, Las Palmas',fr:'Ex. Calle Triana 50, Las Palmas',de:'Z.B. Calle Triana 50, Las Palmas'},'es'),
+  'Europe/Lisbon':          L('Portugal','Lisbon, Portugal',{en:'E.g. Rua Augusta 50, Lisbon',nl:'Bijv. Rua Augusta 50, Lissabon',es:'Ej. Rua Augusta 50, Lisboa',fr:'Ex. Rua Augusta 50, Lisbonne',de:'Z.B. Rua Augusta 50, Lissabon'},'en'),
+  'Europe/Rome':            L('Italy','Rome, Italy',{en:'E.g. Via del Corso 18, Rome',nl:'Bijv. Via del Corso 18, Rome',es:'Ej. Via del Corso 18, Roma',fr:'Ex. Via del Corso 18, Rome',de:'Z.B. Via del Corso 18, Rom'},'en'),
+  'Europe/Zurich':          L('Schweiz','Zürich, Schweiz',{en:'E.g. Bahnhofstrasse 25, Zurich',nl:'Bijv. Bahnhofstrasse 25, Zürich',es:'Ej. Bahnhofstrasse 25, Zúrich',fr:'Ex. Bahnhofstrasse 25, Zurich',de:'Z.B. Bahnhofstrasse 25, Zürich'},'de'),
+  'Europe/Dublin':          L('Ireland','Dublin, Ireland',{en:'E.g. 5 Grafton Street, Dublin',nl:'Bijv. 5 Grafton Street, Dublin',es:'Ej. 5 Grafton Street, Dublín',fr:'Ex. 5 Grafton Street, Dublin',de:'Z.B. 5 Grafton Street, Dublin'},'en'),
+  'Europe/Stockholm':       L('Sweden','Stockholm, Sweden',{en:'E.g. Drottninggatan 12, Stockholm',nl:'Bijv. Drottninggatan 12, Stockholm',es:'Ej. Drottninggatan 12, Estocolmo',fr:'Ex. Drottninggatan 12, Stockholm',de:'Z.B. Drottninggatan 12, Stockholm'},'en'),
+  'Europe/Luxembourg':      L('Luxembourg','Luxembourg',{en:'E.g. 10 Boulevard Royal, Luxembourg',nl:'Bijv. 10 Boulevard Royal, Luxemburg',es:'Ej. 10 Boulevard Royal, Luxemburgo',fr:'Ex. 10 Boulevard Royal, Luxembourg',de:'Z.B. 10 Boulevard Royal, Luxemburg'},'fr'),
+
+  // Americas
+  'America/New_York':       L('United States','New York, NY',{en:'E.g. 350 Fifth Avenue, New York',nl:'Bijv. 350 Fifth Avenue, New York',es:'Ej. 350 Fifth Avenue, Nueva York',fr:'Ex. 350 Fifth Avenue, New York',de:'Z.B. 350 Fifth Avenue, New York'},'en'),
+  'America/Chicago':        L('United States','Chicago, IL',{en:'E.g. 233 Michigan Ave, Chicago',nl:'Bijv. 233 Michigan Ave, Chicago',es:'Ej. 233 Michigan Ave, Chicago',fr:'Ex. 233 Michigan Ave, Chicago',de:'Z.B. 233 Michigan Ave, Chicago'},'en'),
+  'America/Denver':         L('United States','Denver, CO',{en:'E.g. 1600 Broadway, Denver',nl:'Bijv. 1600 Broadway, Denver',es:'Ej. 1600 Broadway, Denver',fr:'Ex. 1600 Broadway, Denver',de:'Z.B. 1600 Broadway, Denver'},'en'),
+  'America/Los_Angeles':    L('United States','Los Angeles, CA',{en:'E.g. 6801 Hollywood Blvd, Los Angeles',nl:'Bijv. 6801 Hollywood Blvd, Los Angeles',es:'Ej. 6801 Hollywood Blvd, Los Ángeles',fr:'Ex. 6801 Hollywood Blvd, Los Angeles',de:'Z.B. 6801 Hollywood Blvd, Los Angeles'},'en'),
+  'America/Toronto':        L('Canada','Toronto, Canada',{en:'E.g. 100 Queen Street W, Toronto',nl:'Bijv. 100 Queen Street W, Toronto',es:'Ej. 100 Queen Street W, Toronto',fr:'Ex. 100 rue Queen O, Toronto',de:'Z.B. 100 Queen Street W, Toronto'},'en'),
+  'America/Vancouver':      L('Canada','Vancouver, Canada',{en:'E.g. 701 W Georgia St, Vancouver',nl:'Bijv. 701 W Georgia St, Vancouver',es:'Ej. 701 W Georgia St, Vancouver',fr:'Ex. 701 rue Georgia O, Vancouver',de:'Z.B. 701 W Georgia St, Vancouver'},'en'),
+  'America/Mexico_City':    L('México','Ciudad de México',{en:'E.g. Av. Reforma 500, Mexico City',nl:'Bijv. Av. Reforma 500, Mexico-Stad',es:'Ej. Av. Reforma 500, Ciudad de México',fr:'Ex. Av. Reforma 500, Mexico',de:'Z.B. Av. Reforma 500, Mexiko-Stadt'},'es'),
+  'America/Bogota':         L('Colombia','Bogotá, Colombia',{en:'E.g. Carrera 7 #40-50, Bogotá',nl:'Bijv. Carrera 7 #40-50, Bogotá',es:'Ej. Carrera 7 #40-50, Bogotá',fr:'Ex. Carrera 7 #40-50, Bogotá',de:'Z.B. Carrera 7 #40-50, Bogotá'},'es'),
+  'America/Lima':           L('Perú','Lima, Perú',{en:'E.g. Av. Arequipa 500, Lima',nl:'Bijv. Av. Arequipa 500, Lima',es:'Ej. Av. Arequipa 500, Lima',fr:'Ex. Av. Arequipa 500, Lima',de:'Z.B. Av. Arequipa 500, Lima'},'es'),
+  'America/Santiago':       L('Chile','Santiago, Chile',{en:'E.g. Av. Libertador 1000, Santiago',nl:'Bijv. Av. Libertador 1000, Santiago',es:'Ej. Av. Libertador 1000, Santiago',fr:'Ex. Av. Libertador 1000, Santiago',de:'Z.B. Av. Libertador 1000, Santiago'},'es'),
+  'America/Buenos_Aires':   L('Argentina','Buenos Aires, Argentina',{en:'E.g. Av. 9 de Julio 100, Buenos Aires',nl:'Bijv. Av. 9 de Julio 100, Buenos Aires',es:'Ej. Av. 9 de Julio 100, Buenos Aires',fr:'Ex. Av. 9 de Julio 100, Buenos Aires',de:'Z.B. Av. 9 de Julio 100, Buenos Aires'},'es'),
+  'America/Caracas':        L('Venezuela','Caracas, Venezuela',{en:'E.g. Av. Bolívar 50, Caracas',nl:'Bijv. Av. Bolívar 50, Caracas',es:'Ej. Av. Bolívar 50, Caracas',fr:'Ex. Av. Bolívar 50, Caracas',de:'Z.B. Av. Bolívar 50, Caracas'},'es'),
+  'America/Sao_Paulo':      L('Brazil','São Paulo, Brazil',{en:'E.g. Av. Paulista 1000, São Paulo',nl:'Bijv. Av. Paulista 1000, São Paulo',es:'Ej. Av. Paulista 1000, São Paulo',fr:'Ex. Av. Paulista 1000, São Paulo',de:'Z.B. Av. Paulista 1000, São Paulo'},'en'),
+  'America/Costa_Rica':     L('Costa Rica','San José, Costa Rica',{en:'E.g. Av. Central 100, San José',nl:'Bijv. Av. Central 100, San José',es:'Ej. Av. Central 100, San José',fr:'Ex. Av. Central 100, San José',de:'Z.B. Av. Central 100, San José'},'es'),
+  'America/Panama':         L('Panamá','Ciudad de Panamá',{en:'E.g. Calle 50, Panama City',nl:'Bijv. Calle 50, Panama-Stad',es:'Ej. Calle 50, Ciudad de Panamá',fr:'Ex. Calle 50, Panama',de:'Z.B. Calle 50, Panama-Stadt'},'es'),
+
+  // Asia & Oceania
+  'Asia/Kolkata':           L('India','Mumbai, India',{en:'E.g. 42 MG Road, Mumbai',nl:'Bijv. 42 MG Road, Mumbai',es:'Ej. 42 MG Road, Bombay',fr:'Ex. 42 MG Road, Mumbai',de:'Z.B. 42 MG Road, Mumbai'},'en'),
+  'Asia/Dubai':             L('United Arab Emirates','Dubai, UAE',{en:'E.g. Sheikh Zayed Road, Dubai',nl:'Bijv. Sheikh Zayed Road, Dubai',es:'Ej. Sheikh Zayed Road, Dubái',fr:'Ex. Sheikh Zayed Road, Dubaï',de:'Z.B. Sheikh Zayed Road, Dubai'},'en'),
+  'Asia/Singapore':         L('Singapore','Singapore',{en:'E.g. 1 Raffles Place, Singapore',nl:'Bijv. 1 Raffles Place, Singapore',es:'Ej. 1 Raffles Place, Singapur',fr:'Ex. 1 Raffles Place, Singapour',de:'Z.B. 1 Raffles Place, Singapur'},'en'),
+  'Asia/Hong_Kong':         L('Hong Kong','Hong Kong',{en:'E.g. 1 Queen\'s Road, Central',nl:'Bijv. 1 Queen\'s Road, Central',es:'Ej. 1 Queen\'s Road, Central',fr:'Ex. 1 Queen\'s Road, Central',de:'Z.B. 1 Queen\'s Road, Central'},'en'),
+  'Asia/Tokyo':             L('Japan','Tokyo, Japan',{en:'E.g. 1-1-1 Marunouchi, Chiyoda',nl:'Bijv. 1-1-1 Marunouchi, Chiyoda',es:'Ej. 1-1-1 Marunouchi, Chiyoda',fr:'Ex. 1-1-1 Marunouchi, Chiyoda',de:'Z.B. 1-1-1 Marunouchi, Chiyoda'},'en'),
+  'Asia/Shanghai':          L('China','Shanghai, China',{en:'E.g. 501 Nanjing Road, Shanghai',nl:'Bijv. 501 Nanjing Road, Shanghai',es:'Ej. 501 Nanjing Road, Shanghái',fr:'Ex. 501 Nanjing Road, Shanghai',de:'Z.B. 501 Nanjing Road, Shanghai'},'en'),
+  'Asia/Seoul':             L('South Korea','Seoul, South Korea',{en:'E.g. 100 Sejong-daero, Seoul',nl:'Bijv. 100 Sejong-daero, Seoul',es:'Ej. 100 Sejong-daero, Seúl',fr:'Ex. 100 Sejong-daero, Séoul',de:'Z.B. 100 Sejong-daero, Seoul'},'en'),
+  'Asia/Jakarta':           L('Indonesia','Jakarta, Indonesia',{en:'E.g. Jl. Sudirman 52, Jakarta',nl:'Bijv. Jl. Sudirman 52, Jakarta',es:'Ej. Jl. Sudirman 52, Yakarta',fr:'Ex. Jl. Sudirman 52, Jakarta',de:'Z.B. Jl. Sudirman 52, Jakarta'},'en'),
+  'Asia/Manila':            L('Philippines','Manila, Philippines',{en:'E.g. Ayala Ave 100, Makati',nl:'Bijv. Ayala Ave 100, Makati',es:'Ej. Ayala Ave 100, Makati',fr:'Ex. Ayala Ave 100, Makati',de:'Z.B. Ayala Ave 100, Makati'},'en'),
+  'Asia/Bangkok':           L('Thailand','Bangkok, Thailand',{en:'E.g. 999 Rama I Road, Bangkok',nl:'Bijv. 999 Rama I Road, Bangkok',es:'Ej. 999 Rama I Road, Bangkok',fr:'Ex. 999 Rama I Road, Bangkok',de:'Z.B. 999 Rama I Road, Bangkok'},'en'),
+  'Australia/Sydney':       L('Australia','Sydney, Australia',{en:'E.g. 1 Martin Place, Sydney',nl:'Bijv. 1 Martin Place, Sydney',es:'Ej. 1 Martin Place, Sídney',fr:'Ex. 1 Martin Place, Sydney',de:'Z.B. 1 Martin Place, Sydney'},'en'),
+  'Pacific/Auckland':       L('New Zealand','Auckland, New Zealand',{en:'E.g. 1 Queen Street, Auckland',nl:'Bijv. 1 Queen Street, Auckland',es:'Ej. 1 Queen Street, Auckland',fr:'Ex. 1 Queen Street, Auckland',de:'Z.B. 1 Queen Street, Auckland'},'en'),
+
+  // Africa
+  'Africa/Johannesburg':    L('South Africa','Johannesburg, South Africa',{en:'E.g. 25 Fox Street, Johannesburg',nl:'Bijv. 25 Fox Street, Johannesburg',es:'Ej. 25 Fox Street, Johannesburgo',fr:'Ex. 25 Fox Street, Johannesburg',de:'Z.B. 25 Fox Street, Johannesburg'},'en'),
+  'Africa/Lagos':           L('Nigeria','Lagos, Nigeria',{en:'E.g. 42 Marina Road, Lagos',nl:'Bijv. 42 Marina Road, Lagos',es:'Ej. 42 Marina Road, Lagos',fr:'Ex. 42 Marina Road, Lagos',de:'Z.B. 42 Marina Road, Lagos'},'en'),
+  'Africa/Nairobi':         L('Kenya','Nairobi, Kenya',{en:'E.g. Kenyatta Avenue 10, Nairobi',nl:'Bijv. Kenyatta Avenue 10, Nairobi',es:'Ej. Kenyatta Avenue 10, Nairobi',fr:'Ex. Kenyatta Avenue 10, Nairobi',de:'Z.B. Kenyatta Avenue 10, Nairobi'},'en'),
+  'Africa/Casablanca':      L('Morocco','Casablanca, Morocco',{en:'E.g. Bd Mohammed V, Casablanca',nl:'Bijv. Bd Mohammed V, Casablanca',es:'Ej. Bd Mohammed V, Casablanca',fr:'Ex. Bd Mohammed V, Casablanca',de:'Z.B. Bd Mohammed V, Casablanca'},'fr'),
+  'Africa/Dakar':           L('Sénégal','Dakar, Sénégal',{en:'E.g. Place de l\'Indépendance, Dakar',nl:'Bijv. Place de l\'Indépendance, Dakar',es:'Ej. Place de l\'Indépendance, Dakar',fr:'Ex. Place de l\'Indépendance, Dakar',de:'Z.B. Place de l\'Indépendance, Dakar'},'fr'),
+  'Africa/Abidjan':         L('Côte d\'Ivoire','Abidjan, Côte d\'Ivoire',{en:'E.g. Bd de la République, Abidjan',nl:'Bijv. Bd de la République, Abidjan',es:'Ej. Bd de la République, Abiyán',fr:'Ex. Bd de la République, Abidjan',de:'Z.B. Bd de la République, Abidjan'},'fr'),
+};
+
+const DEFAULT_LOCALE = L('','',{en:'E.g. 123 Main Street, City',nl:'Bijv. Hoofdstraat 1, Stad',es:'Ej. Calle Principal 123, Ciudad',fr:'Ex. 1 Rue Principale, Ville',de:'Z.B. Hauptstraße 1, Stadt'},'en');
+
+function detectLocale() {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return LOCALE_MAP[tz] || DEFAULT_LOCALE;
+  } catch(e) {
+    return DEFAULT_LOCALE;
+  }
+}
+
+function applyLocale(locale) {
+  // Update address placeholders for all languages
+  T['ph-address'] = locale.addr;
+
+  // Set default country fields
+  if (locale.country) {
+    document.getElementById('g1-country').value = locale.country;
+    document.getElementById('g2-country').value = locale.country;
+    document.getElementById('gov-law').value = locale.country;
+  }
+
+  // Set default signing place
+  if (locale.city) {
+    document.getElementById('doc-place').value = locale.city;
+  }
+
+  // Set default language based on locale (only if no saved preference)
+  try {
+    if (!localStorage.getItem('dg_lang')) {
+      lang = locale.defLang;
+    }
+  } catch(e) {
+    lang = locale.defLang;
+  }
+}
+
+// ====== Document type selection ======
+let currentDocType = 'poa';
+let rentalPropertyType = 'apartment';
+let rentalFurnished = false;
+let rentalDurationType = 'fixed';
+const RENTAL_STEPS = ['r1','r2','r3','r4','r5','r6'];
+const PROP_TYPES = [
+  { id:'house', icon:'🏡' },
+  { id:'apartment', icon:'🏢' },
+  { id:'room', icon:'🛏️' },
+  { id:'commercial', icon:'🏪' },
+  { id:'other', icon:'📦' },
+];
+
+// Jurisdiction rules per country (key = lowercase country match)
+const JUR_RULES = {
+  'nederland': {
+    en:['Max deposit: 2 months rent','Rent increase limited by government cap','Tenant has strong legal protection','Notice period: min 3 months (landlord), 1 month (tenant)'],
+    nl:['Max borg: 2 maanden huur','Huurverhoging begrensd door overheidsplafond','Huurder heeft sterke wettelijke bescherming','Opzegtermijn: min 3 maanden (verhuurder), 1 maand (huurder)'],
+    es:['Depósito máximo: 2 meses de alquiler','Aumento de alquiler limitado por el gobierno','El inquilino tiene fuerte protección legal','Plazo de preaviso: mín. 3 meses (propietario), 1 mes (inquilino)'],
+    fr:['Dépôt maximum : 2 mois de loyer','Augmentation de loyer plafonnée par le gouvernement','Le locataire bénéficie d\'une forte protection juridique','Préavis : min. 3 mois (bailleur), 1 mois (locataire)'],
+    de:['Max. Kaution: 2 Monatsmieten','Mieterhöhung durch staatliche Obergrenze begrenzt','Mieter hat starken gesetzlichen Schutz','Kündigungsfrist: mind. 3 Monate (Vermieter), 1 Monat (Mieter)']
+  },
+  'deutschland': {
+    en:['Max deposit: 3 months cold rent (Kaltmiete)','Rent cap (Mietpreisbremse) may apply','Strong tenant protection (Kündigungsschutz)','Notice period increases with tenancy length'],
+    nl:['Max borg: 3 maanden kale huur (Kaltmiete)','Huurprijsrem (Mietpreisbremse) kan gelden','Sterke huurbescherming (Kündigungsschutz)','Opzegtermijn neemt toe met huurperiode'],
+    es:['Depósito máximo: 3 meses de renta fría (Kaltmiete)','Puede aplicarse el freno de precios (Mietpreisbremse)','Fuerte protección del inquilino (Kündigungsschutz)','El plazo de preaviso aumenta con la duración del arrendamiento'],
+    fr:['Dépôt maximum : 3 mois de loyer nu (Kaltmiete)','Le plafonnement des loyers (Mietpreisbremse) peut s\'appliquer','Forte protection du locataire (Kündigungsschutz)','Le préavis augmente avec la durée de la location'],
+    de:['Max. Kaution: 3 Monatskaltmieten','Mietpreisbremse kann gelten','Starker Kündigungsschutz für Mieter','Kündigungsfrist verlängert sich mit Mietdauer']
+  },
+  'france': {
+    en:['Max deposit: 1 month (unfurnished) or 2 months (furnished)','Minimum lease: 3 years (unfurnished) or 1 year (furnished)','Annual rent increase linked to IRL index','Inventory report (état des lieux) required'],
+    nl:['Max borg: 1 maand (ongemeubileerd) of 2 maanden (gemeubileerd)','Minimale huurtermijn: 3 jaar (ongemeubileerd) of 1 jaar (gemeubileerd)','Jaarlijkse huurverhoging gekoppeld aan IRL-index','Inventarisatie (état des lieux) verplicht'],
+    es:['Depósito máximo: 1 mes (sin muebles) o 2 meses (amueblado)','Arrendamiento mínimo: 3 años (sin muebles) o 1 año (amueblado)','Aumento anual vinculado al índice IRL','Inventario (état des lieux) obligatorio'],
+    fr:['Dépôt maximum : 1 mois (non meublé) ou 2 mois (meublé)','Bail minimum : 3 ans (non meublé) ou 1 an (meublé)','Révision annuelle liée à l\'indice IRL','État des lieux obligatoire'],
+    de:['Max. Kaution: 1 Monat (unmöbliert) oder 2 Monate (möbliert)','Mindestmietdauer: 3 Jahre (unmöbliert) oder 1 Jahr (möbliert)','Jährliche Mietanpassung an IRL-Index gekoppelt','Zustandsbericht (état des lieux) erforderlich']
+  },
+  'españa': {
+    en:['Deposit (fianza): 1 month rent (residential)','Minimum lease: 5 years (individual landlord) or 7 years (company)','Rent increases linked to INE index','Landlord covers structural repairs'],
+    nl:['Borg (fianza): 1 maand huur (woning)','Minimale huurtermijn: 5 jaar (particulier) of 7 jaar (bedrijf)','Huurverhoging gekoppeld aan INE-index','Verhuurder betaalt structureel onderhoud'],
+    es:['Fianza: 1 mes de renta (vivienda)','Duración mínima: 5 años (persona física) o 7 años (empresa)','Actualización de renta vinculada al índice INE','El propietario cubre las reparaciones estructurales'],
+    fr:['Dépôt (fianza) : 1 mois de loyer (résidentiel)','Bail minimum : 5 ans (particulier) ou 7 ans (entreprise)','Révision de loyer liée à l\'indice INE','Le bailleur couvre les réparations structurelles'],
+    de:['Kaution (fianza): 1 Monatsmiete (Wohnung)','Mindestmietdauer: 5 Jahre (Privatperson) oder 7 Jahre (Firma)','Mietanpassung an INE-Index gekoppelt','Vermieter übernimmt strukturelle Reparaturen']
+  },
+  'sint maarten': {
+    en:['Governed by Book 7A of the Civil Code of Sint Maarten','No statutory rent control — rent is freely negotiable','Custom is 1-2 months deposit, but not legally fixed','Notice periods should be clearly stated in the contract'],
+    nl:['Valt onder Boek 7A Burgerlijk Wetboek Sint Maarten','Geen wettelijke huurprijsbeheersing — huur vrij onderhandelbaar','Gebruik is 1-2 maanden borg, maar niet wettelijk vastgelegd','Opzegtermijnen moeten duidelijk in het contract staan'],
+    es:['Regido por el Libro 7A del Código Civil de Sint Maarten','Sin control de alquiler — el precio es negociable libremente','La costumbre es 1-2 meses de depósito, sin base legal fija','Los plazos de preaviso deben constar claramente en el contrato'],
+    fr:['Régi par le Livre 7A du Code civil de Sint Maarten','Pas de contrôle des loyers — le loyer est librement négociable','L\'usage est de 1-2 mois de dépôt, sans base légale fixe','Les délais de préavis doivent être clairement stipulés'],
+    de:['Geregelt durch Buch 7A des Zivilgesetzbuchs von Sint Maarten','Keine gesetzliche Mietpreiskontrolle — Miete frei verhandelbar','Üblich sind 1-2 Monatsmieten Kaution, aber nicht gesetzlich festgelegt','Kündigungsfristen sollten klar im Vertrag stehen']
+  }
+};
+
+function getJurRules(country) {
+  if (!country) return null;
+  const c = country.toLowerCase().trim();
+  for (const [key, rules] of Object.entries(JUR_RULES)) {
+    if (c.includes(key) || key.includes(c)) return rules;
+  }
+  return null;
+}
+
+function showJurNotice(containerId, country) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const rules = getJurRules(country);
+  if (!rules) { el.innerHTML = ''; return; }
+  const items = rules[lang] || rules.en;
+  el.innerHTML = `<div class="jur-notice"><div class="jn-title">${t('jur-title')}</div><ul>${items.map(r=>'<li>'+r+'</li>').join('')}</ul></div>`;
+}
+
+function selectDocType(type) {
+  currentDocType = type;
+  if (type === 'poa') {
+    goStep(1);
+  } else if (type === 'rental') {
+    goRentalStep('r1');
+  }
+}
+
+// ====== Rental navigation ======
+function goRentalStep(step) {
+  if (step === 0) { goStep(0); return; }
+  // Hide all steps
+  document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+  document.getElementById('step-' + step).classList.add('active');
+  const idx = RENTAL_STEPS.indexOf(step);
+  document.getElementById('progress').style.width = ((idx+1) / RENTAL_STEPS.length * 100) + '%';
+  if (step === 'r3') buildPropTypeGrid();
+  if (step === 'r4') showJurNotice('jur-notice-rent', document.getElementById('rl-country').value);
+  if (step === 'r5') showJurNotice('jur-notice-duration', document.getElementById('rl-country').value);
+  if (step === 'r6') renderRentalPreview();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function validateRentalAndGo(from, to) {
+  const req = {
+    'r1': ['rl-name','rl-id','rl-address'],
+    'r2': ['rt-name','rt-id','rt-address'],
+    'r3': ['rp-address'],
+  };
+  let ok = true;
+  (req[from]||[]).forEach(id => {
+    const el = document.getElementById(id);
+    const err = document.getElementById('err-'+id);
+    if (!el.value.trim()) {
+      el.classList.add('field-error');
+      if (err) { err.style.display='block'; err.textContent=t('err-required'); }
+      ok = false;
+    } else {
+      el.classList.remove('field-error');
+      if (err) err.style.display='none';
+    }
+  });
+  if (ok) goRentalStep(to);
+}
+
+function buildPropTypeGrid() {
+  const grid = document.getElementById('prop-type-grid');
+  grid.innerHTML = '';
+  PROP_TYPES.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'choice-card' + (rentalPropertyType === p.id ? ' selected' : '');
+    card.onclick = () => { rentalPropertyType = p.id; buildPropTypeGrid(); };
+    card.innerHTML = `<div class="choice-icon">${p.icon}</div><div class="choice-text">${t('opt-'+p.id)}</div>`;
+    grid.appendChild(card);
+  });
+}
+
+function setFurnished(v) {
+  rentalFurnished = v;
+  document.getElementById('furn-yes').classList.toggle('selected', v);
+  document.getElementById('furn-no').classList.toggle('selected', !v);
+}
+
+function setRentalDuration(type) {
+  rentalDurationType = type;
+  document.getElementById('rdc-fixed').classList.toggle('selected', type==='fixed');
+  document.getElementById('rdc-indef').classList.toggle('selected', type==='indefinite');
+  document.getElementById('rental-dates').style.display = type==='fixed' ? 'grid' : 'none';
+}
+
+// ====== Rental data ======
+function gatherRentalData() {
+  return {
+    landlord: { name:$('rl-name'), id:$('rl-id'), address:$('rl-address'), country:$('rl-country') },
+    tenant:   { name:$('rt-name'), id:$('rt-id'), address:$('rt-address'), country:$('rt-country') },
+    property: { address:$('rp-address'), type:rentalPropertyType, furnished:rentalFurnished },
+    rent:     parseFloat(document.getElementById('r-rent')?.value)||0,
+    currency: document.getElementById('r-currency')?.value||'USD',
+    deposit:  parseFloat(document.getElementById('r-deposit')?.value)||0,
+    payday:   parseInt(document.getElementById('r-payday')?.value)||1,
+    durationType: rentalDurationType,
+    dateStart: document.getElementById('r-date-start')?.value||'',
+    dateEnd:   document.getElementById('r-date-end')?.value||'',
+    docDate:   document.getElementById('r-doc-date')?.value||'',
+    place:     $('r-place'),
+    law:       $('r-law'),
+  };
+}
+function $(id) { return document.getElementById(id)?.value?.trim()||''; }
+
+// ====== Rental preview ======
+function renderRentalPreview() {
+  const d = gatherRentalData();
+  const el = document.getElementById('rental-preview');
+  const person = (p,label) => `<div class="sec"><div class="sec-title">${label}</div><strong>${t('doc-name')}:</strong> ${p.name||'___'}<br><strong>${t('doc-id')}:</strong> ${p.id||'___'}<br><strong>${t('doc-address')}:</strong> ${p.address||'___'}<br><strong>${t('doc-country')}:</strong> ${p.country||'___'}</div>`;
+
+  const typeLabel = t('opt-'+d.property.type);
+  const furnLabel = d.property.furnished ? t('opt-yes') : t('opt-no');
+  const rentTxt = t('rdoc-rent-text').replace('{currency}',d.currency).replace('{amount}',d.rent.toLocaleString()).replace('{day}',d.payday);
+  const depTxt = d.deposit > 0 ? t('rdoc-deposit-text').replace('{currency}',d.currency).replace('{amount}',d.deposit.toLocaleString()) : '';
+  const durTxt = d.durationType === 'fixed'
+    ? t('doc-fixed-text').replace('{start}',fmtDate(d.dateStart)).replace('{end}',fmtDate(d.dateEnd))
+    : t('doc-indef-text');
+
+  const jurRules = getJurRules(d.law || d.landlord.country);
+  let jurHtml = '';
+  if (jurRules) {
+    const items = jurRules[lang]||jurRules.en;
+    jurHtml = `<div style="margin-top:12px;padding:10px;background:#fffbe6;border:1px solid #e6d27a;border-radius:6px;font-size:12px;"><strong>${t('jur-title')}</strong><ul style="margin:4px 0 0 16px;">${items.map(r=>'<li>'+r+'</li>').join('')}</ul></div>`;
+  }
+
+  el.innerHTML = `
+    <h2>${t('rdoc-title')}</h2>
+    <div class="sec"><p>${t('rdoc-between')}</p></div>
+    ${person(d.landlord, t('rdoc-landlord'))}
+    ${person(d.tenant, t('rdoc-tenant'))}
+    <div class="sec"><div class="sec-title">${t('rdoc-property-h')}</div>
+      <p>${t('rdoc-property-text')}</p>
+      <strong>${t('doc-address')}:</strong> ${d.property.address||'___'}<br>
+      <strong>${t('rdoc-type')}:</strong> ${typeLabel}<br>
+      <strong>${t('rdoc-furnished')}:</strong> ${furnLabel}
+    </div>
+    <div class="sec"><div class="sec-title">${t('rdoc-rent-h')}</div>
+      <p>${rentTxt}</p>
+      ${depTxt ? '<p>'+depTxt+'</p>' : ''}
+    </div>
+    <div class="sec"><div class="sec-title">${t('doc-duration-h')}</div><p>${durTxt}</p></div>
+    <div class="sec"><div class="sec-title">${t('doc-law-h')}</div><p>${t('doc-law-text').replace('{law}',d.law||'___')}</p></div>
+    <div class="sec"><div class="sec-title">${t('doc-exec-h')}</div><p>${t('doc-exec-text').replace('{place}',d.place||'___').replace('{date}',fmtDate(d.docDate))}</p></div>
+    <div class="sig-grid">
+      <div><div class="sig-line">${t('rdoc-landlord')}<br>${d.landlord.name||'___'}</div></div>
+      <div><div class="sig-line">${t('rdoc-tenant')}<br>${d.tenant.name||'___'}</div></div>
+    </div>
+    ${jurHtml}
+  `;
+}
+
+// ====== Rental PDF ======
+async function downloadRentalPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit:'mm', format:'a4' });
+  const d = gatherRentalData();
+  const mg = 25, pw = 160;
+  let y = mg;
+
+  const addTxt = (text, opts={}) => {
+    const sz=opts.size||10, st=opts.style||'normal', al=opts.align||'left';
+    doc.setFontSize(sz); doc.setFont('helvetica',st);
+    const lines = doc.splitTextToSize(text, opts.w||pw);
+    if (y+lines.length*sz*0.4>280){doc.addPage();y=mg;}
+    doc.text(lines, al==='center'?105:mg, y, {align:al});
+    y+=lines.length*sz*0.42+(opts.gap||2);
+  };
+
+  addTxt(t('rdoc-title'),{size:18,style:'bold',align:'center',gap:8}); y+=3;
+  addTxt(t('rdoc-between'),{size:10,style:'italic'}); y+=2;
+
+  // Landlord
+  addTxt(t('rdoc-landlord'),{size:11,style:'bold',gap:3});
+  addTxt(`${t('doc-name')}: ${d.landlord.name||'___'}`,{});
+  addTxt(`${t('doc-id')}: ${d.landlord.id||'___'}`,{});
+  addTxt(`${t('doc-address')}: ${d.landlord.address||'___'}`,{});
+  addTxt(`${t('doc-country')}: ${d.landlord.country||'___'}`,{}); y+=3;
+
+  // Tenant
+  addTxt(t('rdoc-tenant'),{size:11,style:'bold',gap:3});
+  addTxt(`${t('doc-name')}: ${d.tenant.name||'___'}`,{});
+  addTxt(`${t('doc-id')}: ${d.tenant.id||'___'}`,{});
+  addTxt(`${t('doc-address')}: ${d.tenant.address||'___'}`,{});
+  addTxt(`${t('doc-country')}: ${d.tenant.country||'___'}`,{}); y+=4;
+
+  // Property
+  addTxt(t('rdoc-property-h'),{size:12,style:'bold',gap:4});
+  addTxt(t('rdoc-property-text'),{});
+  addTxt(`${t('doc-address')}: ${d.property.address||'___'}`,{});
+  addTxt(`${t('rdoc-type')}: ${t('opt-'+d.property.type)}`,{});
+  addTxt(`${t('rdoc-furnished')}: ${d.property.furnished?t('opt-yes'):t('opt-no')}`,{}); y+=3;
+
+  // Rent
+  addTxt(t('rdoc-rent-h'),{size:12,style:'bold',gap:4});
+  addTxt(t('rdoc-rent-text').replace('{currency}',d.currency).replace('{amount}',d.rent.toLocaleString()).replace('{day}',d.payday),{});
+  if(d.deposit>0) addTxt(t('rdoc-deposit-text').replace('{currency}',d.currency).replace('{amount}',d.deposit.toLocaleString()),{});
+  y+=3;
+
+  // Duration
+  addTxt(t('doc-duration-h'),{size:12,style:'bold',gap:4});
+  if(d.durationType==='fixed') addTxt(t('doc-fixed-text').replace('{start}',fmtDate(d.dateStart)).replace('{end}',fmtDate(d.dateEnd)),{});
+  else addTxt(t('doc-indef-text'),{}); y+=3;
+
+  // Law
+  addTxt(t('doc-law-h'),{size:12,style:'bold',gap:4});
+  addTxt(t('doc-law-text').replace('{law}',d.law||'___'),{}); y+=3;
+
+  // Execution
+  addTxt(t('doc-exec-h'),{size:12,style:'bold',gap:4});
+  addTxt(t('doc-exec-text').replace('{place}',d.place||'___').replace('{date}',fmtDate(d.docDate)),{});
+
+  // Signatures
+  y+=20; if(y>250){doc.addPage();y=mg+20;}
+  doc.setDrawColor(50);
+  doc.line(mg,y,mg+65,y); doc.setFontSize(9);
+  doc.text(t('rdoc-landlord'),mg,y+5); doc.text(d.landlord.name||'',mg,y+9);
+  doc.line(mg+95,y,mg+160,y);
+  doc.text(t('rdoc-tenant'),mg+95,y+5); doc.text(d.tenant.name||'',mg+95,y+9);
+
+  // Disclaimer
+  y+=25; if(y>270){doc.addPage();y=mg;}
+  doc.setFontSize(7); doc.setTextColor(120);
+  const disc = t('rental-disclaimer').replace('⚠ ','');
+  const discLines = doc.splitTextToSize(disc,pw);
+  doc.text(discLines,mg,y); y+=discLines.length*3.5;
+
+  // Footer
+  doc.setFontSize(7); doc.setTextColor(150);
+  doc.text('Generated by documentgenerator.ai',105,290,{align:'center'});
+
+  const blob = doc.output('blob');
+  const fn = `Rental_Agreement_${d.tenant.name?d.tenant.name.replace(/\s+/g,'_'):'draft'}.pdf`;
+  try { const dl=await window.claude?.use?.('downloads'); if(dl){await dl.save({filename:fn,data:blob});return;} } catch(e){}
+  const u=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=u; a.download=fn; a.click(); URL.revokeObjectURL(u);
+}
+
+// ====== Contact / Suggest ======
+function toggleContact() {
+  const m = document.getElementById('contact-modal');
+  m.classList.toggle('show');
+  // Reset to options view
+  document.getElementById('contact-options').style.display = 'flex';
+  document.getElementById('suggest-form').style.display = 'none';
+  document.getElementById('feedback-form').style.display = 'none';
+  document.getElementById('suggest-thanks').style.display = 'none';
+}
+
+function showSuggestForm() {
+  document.getElementById('contact-options').style.display = 'none';
+  document.getElementById('suggest-form').style.display = 'block';
+}
+
+function showFeedbackForm() {
+  document.getElementById('contact-options').style.display = 'none';
+  document.getElementById('feedback-form').style.display = 'block';
+}
+
+function submitSuggestion(type) {
+  const field = type === 'suggest' ? 'suggest-text' : 'feedback-text';
+  const text = document.getElementById(field).value.trim();
+  if (!text) return;
+
+  // Store locally for now (backend integration later)
+  try {
+    const stored = JSON.parse(localStorage.getItem('dg_feedback') || '[]');
+    stored.push({ type, text, lang, date: new Date().toISOString() });
+    localStorage.setItem('dg_feedback', JSON.stringify(stored));
+  } catch(e) {}
+
+  document.getElementById('suggest-form').style.display = 'none';
+  document.getElementById('feedback-form').style.display = 'none';
+  document.getElementById('suggest-thanks').style.display = 'block';
+
+  // Clear fields
+  document.getElementById('suggest-text').value = '';
+  document.getElementById('feedback-text').value = '';
+
+  // Auto-close after 2s
+  setTimeout(() => toggleContact(), 2000);
+}
+
+// ====== Admin changelog ======
+if (location.search.includes('admin')) {
+  document.getElementById('changelog-modal').classList.add('show');
+}
+
+// ====== Init ======
+(function init() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('doc-date').value = today;
+  document.getElementById('date-start').value = today;
+  document.getElementById('r-doc-date').value = today;
+  document.getElementById('r-date-start').value = today;
+
+  // Detect locale from timezone
+  const locale = detectLocale();
+  applyLocale(locale);
+
+  // Also set rental defaults
+  if (locale.country) {
+    document.getElementById('rl-country').value = locale.country;
+    document.getElementById('rt-country').value = locale.country;
+    document.getElementById('r-law').value = locale.country;
+  }
+  if (locale.city) {
+    document.getElementById('r-place').value = locale.city;
+  }
+  // Set currency based on country
+  const eurCountries = ['nederland','deutschland','france','españa','italy','belgium','portugal','ireland','austria','luxembourg','österreich'];
+  const angCountries = ['sint maarten','curaçao','curacao'];
+  const gbpCountries = ['united kingdom'];
+  const c = (locale.country||'').toLowerCase();
+  if (eurCountries.some(e=>c.includes(e))) document.getElementById('r-currency').value = 'EUR';
+  else if (angCountries.some(e=>c.includes(e))) document.getElementById('r-currency').value = 'ANG';
+  else if (gbpCountries.some(e=>c.includes(e))) document.getElementById('r-currency').value = 'GBP';
+  else document.getElementById('r-currency').value = 'USD';
+
+  // Restore saved language preference (overrides locale)
+  try {
+    const s = localStorage.getItem('dg_lang');
+    if (s) lang = s;
+  } catch(e) {}
+
+  setLang(lang);
+  buildScopeGrid();
+})();
+</script>
+</body>
+</html>
